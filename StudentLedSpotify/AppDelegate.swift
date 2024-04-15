@@ -10,10 +10,26 @@ import UIKit
 @main
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
-
+  var window: UIWindow?
 
   func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
-    // Override point for customization after application launch.
+    let window = UIWindow(frame: UIScreen.main.bounds)
+
+    if AuthManger.shared.isSignedIn {
+
+        AuthManger.shared.shouldRefreshIfNeeded(completion: nil)
+
+      let storyboard = UIStoryboard(name: "Main", bundle: nil)
+      let mainVC = storyboard.instantiateViewController(withIdentifier: "tabBarVC") as! TabBarController
+      window.rootViewController = mainVC
+    }else{
+      let storyboard = UIStoryboard(name: "Main", bundle: nil)
+      let loginVC = storyboard.instantiateViewController(withIdentifier: "loginVC") as! LoginViewController
+      window.rootViewController = loginVC
+    }
+
+    window.makeKeyAndVisible()
+    self.window = window
     return true
   }
 
