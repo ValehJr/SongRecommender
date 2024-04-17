@@ -17,7 +17,6 @@ class AudioViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        // Initialize AVPlayer with URL
         if let url = URL(string: "https://p.scdn.co/mp3-preview/047e8976e8c483bfe9ccdc8773b429319741e99b?cid=d9219a18c2ed48e685ea287cbfcdda95") {
             let playerItem = AVPlayerItem(url: url)
             player = AVPlayer(playerItem: playerItem)
@@ -29,12 +28,10 @@ class AudioViewController: UIViewController {
         guard let player = player else { return }
 
         if player.rate == 0 {
-            // Player is currently paused, start playing
             player.play()
           playButton.setImage(UIImage(named: "pause"), for: .normal)
             timer = Timer.scheduledTimer(timeInterval: 0.1, target: self, selector: #selector(updateProgress), userInfo: nil, repeats: true)
         } else {
-            // Player is currently playing, pause it
             player.pause()
           playButton.setImage(UIImage(named: "play"), for: .normal)
           timer?.invalidate()

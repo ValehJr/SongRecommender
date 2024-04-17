@@ -30,6 +30,7 @@
 		1D50F5212BC3EB9E00B9B72D /* PaddedTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D50F5202BC3EB9E00B9B72D /* PaddedTextField.swift */; };
 		1D50F5252BC3EC3A00B9B72D /* SongsTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D50F5232BC3EC3A00B9B72D /* SongsTableViewCell.swift */; };
 		1D50F5262BC3EC3A00B9B72D /* SongsTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1D50F5242BC3EC3A00B9B72D /* SongsTableViewCell.xib */; };
+		1D7085DD2BCD202500CE4682 /* SongFetcher.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D7085DC2BCD202500CE4682 /* SongFetcher.swift */; };
 		1D76DF272BCC31B300C055D2 /* SearchTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D76DF252BCC31B300C055D2 /* SearchTableViewCell.swift */; };
 		1D76DF282BCC31B300C055D2 /* SearchTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1D76DF262BCC31B300C055D2 /* SearchTableViewCell.xib */; };
 		1D779B062BC50B230000852F /* AudioViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D779B052BC50B230000852F /* AudioViewController.swift */; };
@@ -67,6 +68,7 @@
 		1D50F5202BC3EB9E00B9B72D /* PaddedTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaddedTextField.swift; sourceTree = "<group>"; };
 		1D50F5232BC3EC3A00B9B72D /* SongsTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SongsTableViewCell.swift; sourceTree = "<group>"; };
 		1D50F5242BC3EC3A00B9B72D /* SongsTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = SongsTableViewCell.xib; sourceTree = "<group>"; };
+		1D7085DC2BCD202500CE4682 /* SongFetcher.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SongFetcher.swift; sourceTree = "<group>"; };
 		1D76DF252BCC31B300C055D2 /* SearchTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchTableViewCell.swift; sourceTree = "<group>"; };
 		1D76DF262BCC31B300C055D2 /* SearchTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = SearchTableViewCell.xib; sourceTree = "<group>"; };
 		1D779B052BC50B230000852F /* AudioViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioViewController.swift; sourceTree = "<group>"; };
@@ -130,6 +132,7 @@
 				1D2F23B52BC2C77F0023FA2A /* AuthManager.swift */,
 				1D2F23B72BC2C7EE0023FA2A /* APICaller.swift */,
 				1DF69DB92BCACEFA00084FD0 /* CSVFetcher.swift */,
+				1D7085DC2BCD202500CE4682 /* SongFetcher.swift */,
 			);
 			path = Managers;
 			sourceTree = "<group>";
@@ -312,6 +315,7 @@
 				1D50F51C2BC3B4E000B9B72D /* TabBarController.swift in Sources */,
 				1D2F23BE2BC2C8580023FA2A /* SearchResult.swift in Sources */,
 				1D2F23CC2BC2C9620023FA2A /* AuthResponses.swift in Sources */,
+				1D7085DD2BCD202500CE4682 /* SongFetcher.swift in Sources */,
 				1D2F23B62BC2C77F0023FA2A /* AuthManager.swift in Sources */,
 				1DF6EFAD2BCA7A350042B6B6 /* SongPresentationController.swift in Sources */,
 				1DF69DBA2BCACEFA00084FD0 /* CSVFetcher.swift in Sources */,

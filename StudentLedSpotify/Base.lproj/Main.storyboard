@@ -153,9 +153,9 @@
                                                     <constraint firstAttribute="height" constant="38" id="yP5-cV-HTy"/>
                                                 </constraints>
                                             </imageView>
-                                            <progressView opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="750" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Q5b-QI-esI">
+                                            <progressView opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="Q5b-QI-esI">
                                                 <rect key="frame" x="8" y="52" width="345" height="4"/>
-                                                <color key="progressTintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                <color key="progressTintColor" red="0.46666666670000001" green="0.46666666670000001" blue="0.46666666670000001" alpha="1" colorSpace="calibratedRGB"/>
                                                 <color key="trackTintColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                             </progressView>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="N8a-ti-Bp9">
@@ -166,15 +166,20 @@
                                                 </constraints>
                                                 <state key="normal" title="Button"/>
                                                 <buttonConfiguration key="configuration" style="plain" image="play"/>
+                                                <connections>
+                                                    <action selector="playButtonAction:" destination="ZGe-wC-HS6" eventType="touchUpInside" id="7Ei-md-pQO"/>
+                                                </connections>
                                             </button>
                                         </subviews>
                                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                         <constraints>
+                                            <constraint firstAttribute="trailing" secondItem="Q5b-QI-esI" secondAttribute="trailing" constant="8" id="1vq-83-rbr"/>
                                             <constraint firstItem="z1b-Ar-jja" firstAttribute="leading" secondItem="M1v-SJ-HAA" secondAttribute="trailing" constant="8" symbolic="YES" id="4xF-bh-xh8"/>
                                             <constraint firstItem="rVi-St-6aK" firstAttribute="leading" secondItem="M1v-SJ-HAA" secondAttribute="trailing" constant="8" symbolic="YES" id="5c9-Qf-arf"/>
                                             <constraint firstItem="N8a-ti-Bp9" firstAttribute="leading" secondItem="rVi-St-6aK" secondAttribute="trailing" constant="8" symbolic="YES" id="7bR-8R-SY1"/>
                                             <constraint firstItem="M1v-SJ-HAA" firstAttribute="top" secondItem="nEd-F5-BCS" secondAttribute="top" constant="8" id="Ago-h8-fqt"/>
                                             <constraint firstAttribute="trailing" secondItem="N8a-ti-Bp9" secondAttribute="trailing" constant="8" id="Fov-yE-Cs1"/>
+                                            <constraint firstItem="Q5b-QI-esI" firstAttribute="leading" secondItem="nEd-F5-BCS" secondAttribute="leading" constant="8" id="Ggb-pX-6Nq"/>
                                             <constraint firstAttribute="bottom" secondItem="Q5b-QI-esI" secondAttribute="bottom" id="ZDq-fx-T4a"/>
                                             <constraint firstAttribute="height" constant="56" id="ZQM-81-i0A"/>
                                             <constraint firstItem="N8a-ti-Bp9" firstAttribute="leading" secondItem="z1b-Ar-jja" secondAttribute="trailing" constant="28" id="fcj-yU-XOd"/>

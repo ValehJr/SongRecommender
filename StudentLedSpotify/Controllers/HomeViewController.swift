@@ -2,15 +2,13 @@
 //  HomeViewController.swift
 //  StudentLedSpotify
 //
-//  Created by Valeh Ismayilov on 08.04.24.
+//  Created by Valeh Cart on 08.04.24.
 //
 
 import UIKit
+import AVFoundation
 
 class HomeViewController: UIViewController,UIScrollViewDelegate {
-
-  var searchWorkItem: DispatchWorkItem?
-
   @IBOutlet weak var searchTableView: UITableView! {
     didSet {
       searchTableView.dataSource = self
@@ -46,25 +44,18 @@ class HomeViewController: UIViewController,UIScrollViewDelegate {
   var displayedSongsCount = 0
   let songsPerPage = 9
 
-  var currentOffset = 0
-  let chunkSize = 15
-
-  var invalid = 0
-
-  var Songs = [Song]()
+  var player: AVPlayer?
+  var timer: Timer?
 
   override func viewDidLoad() {
     super.viewDidLoad()
     UISetup()
-    searchField.addTarget(self, action: #selector(textFieldDidChange(_:)), for: .editingChanged)
     songView.isHidden = true
 
     let tapGesture = UITapGestureRecognizer(target: self, action: #selector(songViewTapped))
-    songView.addGestureRecognizer(tapGesture)
-    DispatchQueue.global().async {
-      self.loadNextChunk()
-      self.loadMoreData()
-    }
+
+    searchField.addTarget(self, action: #selector(textFieldDidEndEditingOnExit(_:)), for: .editingDidEndOnExit)
+
   }
 
   @IBAction func refreshAction(_ sender: Any) {
@@ -84,26 +75,57 @@ class HomeViewController: UIViewController,UIScrollViewDelegate {
     searchTableView.layer.cornerRadius = 16
   }
 
-  @objc func textFieldDidChange(_ textField: UITextField) {
-      searchWorkItem?.cancel()
-      let query = textField.text ?? ""
-    if(query.isEmpty){
-      searchTableView.isHidden = true
-    } else {
-      searchTableView.isHidden  = false
+  func fetchSongs(for query: String) {
+    // Create the URL
+    let urlString = "http://127.0.0.1:8000/getrecommendation/?search_string=\(query.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) ?? "")"
+    guard let url = URL(string: urlString) else {
+      print("Invalid URL")
+      return
     }
 
-      let workItem = DispatchWorkItem { [weak self] in
-          guard let self = self else { return }
-          let filteredSongs = self.Songs.filter { $0.trackName.lowercased().contains(query.lowercased()) || $0.artistName.lowercased().contains(query.lowercased())}
-          print("Filtered Songs: \(filteredSongs)")
+    // Define the request parameters
+    var request = URLRequest(url: url)
+    request.httpMethod = "POST"
+    request.setValue("application/json", forHTTPHeaderField: "accept")
+    // Set the request body
 
-          DispatchQueue.main.async {
-              self.searchResults = filteredSongs
-          }
+    URLSession.shared.dataTask(with: request) { data, response, error in
+      // Handle response
+      if let error = error {
+        print("Error fetching data: \(error)")
+        return
       }
-      searchWorkItem = workItem
-      DispatchQueue.global().asyncAfter(deadline: .now() + 0.5, execute: workItem)
+
+      guard let httpResponse = response as? HTTPURLResponse else {
+        print("Invalid HTTP response")
+        return
+      }
+
+      guard httpResponse.statusCode == 200 else {
+        print("HTTP status code: \(httpResponse.statusCode)")
+        return
+      }
+
+      guard let data = data else {
+        print("No data received")
+        return
+      }
+
+      do {
+        let songs = try JSONDecoder().decode([Song].self, from: data)
+        DispatchQueue.main.async {
+          self.searchResults = songs
+          self.songsTableVIew.reloadData()
+        }
+      } catch {
+        print("Error decoding JSON: \(error)")
+      }
+    }.resume()
+  }
+
+  @objc func textFieldDidEndEditingOnExit(_ textField: UITextField) {
+    guard let text = textField.text else { return }
+    fetchSongs(for: text)
   }
 
   @objc func songViewTapped() {
@@ -113,101 +135,100 @@ class HomeViewController: UIViewController,UIScrollViewDelegate {
     present(songViewController, animated: true, completion: nil)
   }
 
-  func loadNextChunk() {
-    guard let filePath = Bundle.main.path(forResource: "artists_songs", ofType: "csv") else {
-      return
-    }
-
-    do {
-      let data = try String(contentsOfFile: filePath, encoding: .utf8)
-      var rows = data.components(separatedBy: "\n")
-      rows.removeFirst() // Remove header
-
-      let endIndex = min(currentOffset + chunkSize, rows.count)
-      let chunk = rows[currentOffset..<endIndex]
-      currentOffset = endIndex
-
-      DispatchQueue.global().async {
-        for row in chunk {
-          let columns = row.components(separatedBy: ",")
-          if columns.count >= 4 {
-            let artistName = columns[1]
-            let trackName = columns[2]
-            let trackID = columns[3]
-            let song = Song(artistName: artistName, trackName: trackName, trackID: trackID)
-            self.Songs.append(song)
-          } else {
-            print("Invalid row: \(row)")
-          }
-        }
-
-        DispatchQueue.main.async {
-          self.searchTableView.reloadData()
-        }
+  func loadImage(from url: URL, completion: @escaping (UIImage?) -> Void) {
+    let session = URLSession.shared
+    let task = session.dataTask(with: url) { (data, response, error) in
+      if let error = error {
+        print("Error loading image: \(error)")
+        completion(nil)
+        return
       }
-    } catch {
-      print(error)
+
+      guard let data = data, let image = UIImage(data: data) else {
+        print("Invalid image data")
+        completion(nil)
+        return
+      }
+      completion(image)
+    }
+
+    task.resume()
+  }
+
+  @IBAction func playButtonAction(_ sender: Any) {
+    guard let player = player else { return }
+
+    if player.rate == 0 {
+      player.play()
+      playButton.setImage(UIImage(named: "pause"), for: .normal)
+      timer = Timer.scheduledTimer(timeInterval: 0.1, target: self, selector: #selector(updateProgress), userInfo: nil, repeats: true)
+    } else {
+      player.pause()
+      playButton.setImage(UIImage(named: "play"), for: .normal)
+      timer?.invalidate()
+      timer = nil
     }
   }
 
-  func scrollViewDidScroll(_ scrollView: UIScrollView) {
-    let offsetY = scrollView.contentOffset.y
-       let contentHeight = scrollView.contentSize.height
-       let screenHeight = scrollView.frame.size.height
-
-       // Check if user has scrolled to the bottom and if searchTableView is visible
-       if offsetY > contentHeight - screenHeight, scrollView == searchTableView {
-           loadMoreData()
-       }
+  @objc func updateProgress() {
+    guard let player = player else { return }
+    let duration = CMTimeGetSeconds(player.currentItem?.duration ?? CMTime.zero)
+    let currentTime = CMTimeGetSeconds(player.currentTime())
+    let progress = Float(currentTime / duration)
+    songProgress.setProgress(progress, animated: true)
   }
-
-  func loadMoreData() {
-    let endIndex = min(currentOffset + chunkSize, Songs.count)
-    guard currentOffset < Songs.count else {
-      // All data has been loaded
-      return
-    }
-
-    let additionalSongs = Songs[currentOffset..<endIndex]
-    currentOffset = endIndex
-
-    DispatchQueue.main.async {
-      // Append the new data to searchResults
-      self.searchResults.append(contentsOf: additionalSongs)
-      self.searchTableView.reloadData()
-    }
-  }
-
 }
 
 extension HomeViewController: UITableViewDelegate, UITableViewDataSource {
   func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-    if(tableView == searchTableView ){
-      return searchResults.count
-    } else {
-      return min(displayedSongsCount, searchResults.count)
-    }
+    return searchResults.count
   }
 
   func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-    if(tableView == songsTableVIew){
+    if tableView == songsTableVIew {
       let cell = tableView.dequeueReusableCell(withIdentifier: "SongsTableViewCell", for: indexPath) as! SongsTableViewCell
+      let song = searchResults[indexPath.item]
+      cell.nameLabel.text = song.track_name
+      cell.artistLabel.text = song.artist_name
+      if let imageUrl = URL(string: song.image_url) {
+        loadImage(from: imageUrl) { (image) in
+          DispatchQueue.main.async{
+            cell.songImage.image = image
+          }
+        }
+      }
       return cell
     } else {
       let cell = tableView.dequeueReusableCell(withIdentifier: "SearchTableViewCell", for: indexPath) as! SearchTableViewCell
-      let song = Songs[indexPath.item]
-      cell.songNameLabel.text = song.trackName
       return cell
     }
-
   }
+
   func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+    let song = searchResults[indexPath.item]
+    songName.text = song.track_name
+    artistName.text = song.artist_name
+    if let imageUrl = URL(string: song.image_url) {
+      loadImage(from: imageUrl) { (image) in
+        DispatchQueue.main.async{
+          self.songImage.image = image
+        }
+      }
+    }
+    if let mp3UrlString = song.mp3_url, let url = URL(string: mp3UrlString) {
+      playButton.setImage(UIImage(named: "play"), for: .normal)
+      let playerItem = AVPlayerItem(url: url)
+      player = AVPlayer(playerItem: playerItem)
+      songView.isHidden = false
+    } else if let spotifyUrlString = song.spotify_url, let url = URL(string: spotifyUrlString) {
+      UIApplication.shared.open(url, options: [:], completionHandler: nil)
+    } else {
+      print("Both mp3_url and spotify_url are null")
+    }
     songView.isHidden = false
-    let song = Songs[indexPath.row]
-    songName.text = song.trackName
-    artistName.text = song.artistName
   }
 }
+
 
 extension HomeViewController: UIViewControllerTransitioningDelegate {
   func presentationController(forPresented presented: UIViewController, presenting: UIViewController?, source: UIViewController) -> UIPresentationController? {
