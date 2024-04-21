@@ -24,10 +24,16 @@ class SongViewController: UIViewController {
 
   var song:Song?
 
-  var playStateDidChange: ((Bool) -> Void)? // Closure to notify play state changes
+  var playStateDidChange: ((Bool) -> Void)?
 
   override func viewDidLoad() {
     super.viewDidLoad()
+
+    if isSongSaved() {
+      heartButton.setImage(UIImage(named: "heartFilled"), for: .normal)
+    } else {
+      heartButton.setImage(UIImage(named: "heart"), for: .normal)
+    }
 
   }
 
@@ -52,32 +58,71 @@ class SongViewController: UIViewController {
   }
 
   @IBAction func heartButtonAction(_ sender: Any) {
-    saveSongToUserDefaults()
+    if isSongSaved() {
+      deleteSongFromUserDefaults()
+      heartButton.setImage(UIImage(named: "heart"), for: .normal)
+    } else {
+      saveSongToUserDefaults()
+      heartButton.setImage(UIImage(named: "heartFilled"), for: .normal)
+    }
   }
-  
+
   func saveSongToUserDefaults() {
-      guard let song = song else {
-          print("No song to save.")
-          return
-      }
+    guard let song = song else {
+      print("No song to save.")
+      return
+    }
 
+    do {
+      let encoder = JSONEncoder()
+      let songData = try encoder.encode(song)
+      var songsArray = UserDefaults.standard.array(forKey: "songs") as? [Data] ?? []
+      songsArray.append(songData)
+      UserDefaults.standard.set(songsArray, forKey: "songs")
+
+      print("Song saved to UserDefaults.")
+    } catch {
+      print("Error encoding song data:", error)
+    }
+  }
+
+  func deleteSongFromUserDefaults() {
+    guard let song = song else {
+      print("No song to delete.")
+      return
+    }
+    var songsArray = UserDefaults.standard.array(forKey: "songs") as? [Data] ?? []
+    songsArray = songsArray.filter { data in
       do {
-          let encoder = JSONEncoder()
-          let songData = try encoder.encode(song)
-
-          // Retrieve existing array of songs from UserDefaults or create a new array
-          var songsArray = UserDefaults.standard.array(forKey: "songs") as? [Data] ?? []
-
-          // Append the new song data to the array
-          songsArray.append(songData)
-
-          // Save the updated array back to UserDefaults
-          UserDefaults.standard.set(songsArray, forKey: "songs")
-
-          print("Song saved to UserDefaults.")
+        let decoder = JSONDecoder()
+        let savedSong = try decoder.decode(Song.self, from: data)
+        return savedSong.track_id != song.track_id
       } catch {
-          print("Error encoding song data:", error)
+        print("Error decoding song data:", error)
+        return true
       }
+    }
+
+    UserDefaults.standard.set(songsArray, forKey: "songs")
+    print("Song deleted from UserDefaults.")
+  }
+
+  func isSongSaved() -> Bool {
+    guard let songsData = UserDefaults.standard.array(forKey: "songs") as? [Data], let currentSong = song else {
+      return false
+    }
+    for songData in songsData {
+      do {
+        let decoder = JSONDecoder()
+        let savedSong = try decoder.decode(Song.self, from: songData)
+        if savedSong == currentSong {
+          return true
+        }
+      } catch {
+        print("Error decoding song data:", error)
+      }
+    }
+    return false
   }
 
 

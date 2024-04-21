@@ -15,31 +15,8 @@ struct Song:Codable {
     let mp3_url: String?
     let spotify_url: String?
     let image_url: String
-}
-struct AnyCodable: Codable {
-    let value: Any
 
-    init<T: Encodable>(_ value: T?) {
-        self.value = value ?? ()
-    }
-
-    func encode(to encoder: Encoder) throws {
-        var container = encoder.singleValueContainer()
-        if let encodableValue = value as? Encodable {
-            try container.encode(encodableValue)
-        } else {
-            throw EncodingError.invalidValue(value, EncodingError.Context(codingPath: encoder.codingPath, debugDescription: "Value is not encodable"))
-        }
-    }
-
-    init(from decoder: Decoder) throws {
-        let container = try decoder.singleValueContainer()
-        if let stringValue = try? container.decode(String.self) {
-            value = stringValue
-        } else if let doubleValue = try? container.decode(Double.self) {
-            value = doubleValue
-        } else {
-            throw DecodingError.typeMismatch(Any.self, DecodingError.Context(codingPath: decoder.codingPath, debugDescription: "Unsupported type"))
-        }
-    }
+  static func == (lhs: Song, rhs: Song) -> Bool {
+          return lhs.track_id == rhs.track_id
+      }
 }

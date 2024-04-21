@@ -53,10 +53,25 @@
                     <view key="view" contentMode="scaleToFill" id="jwR-7V-4FQ">
                         <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="-1" estimatedSectionHeaderHeight="-1" sectionFooterHeight="-1" estimatedSectionFooterHeight="-1" translatesAutoresizingMaskIntoConstraints="NO" id="Xtr-4f-8Lq">
+                                <rect key="frame" x="16" y="59" width="361" height="710"/>
+                                <color key="backgroundColor" red="0.070588235289999995" green="0.070588235289999995" blue="0.070588235289999995" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                            </tableView>
+                        </subviews>
                         <viewLayoutGuide key="safeArea" id="S5F-hs-b14"/>
                         <color key="backgroundColor" red="0.070588235289999995" green="0.070588235289999995" blue="0.070588235289999995" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <constraints>
+                            <constraint firstItem="Xtr-4f-8Lq" firstAttribute="top" secondItem="S5F-hs-b14" secondAttribute="top" id="6Xf-p5-KDg"/>
+                            <constraint firstItem="S5F-hs-b14" firstAttribute="bottom" secondItem="Xtr-4f-8Lq" secondAttribute="bottom" id="L6Z-1k-Htw"/>
+                            <constraint firstItem="Xtr-4f-8Lq" firstAttribute="leading" secondItem="S5F-hs-b14" secondAttribute="leading" constant="16" id="bRU-Qn-Qsx"/>
+                            <constraint firstItem="S5F-hs-b14" firstAttribute="trailing" secondItem="Xtr-4f-8Lq" secondAttribute="trailing" constant="16" id="c4i-mp-Wcx"/>
+                        </constraints>
                     </view>
                     <tabBarItem key="tabBarItem" title="Item 2" id="yaD-AR-P5b"/>
+                    <connections>
+                        <outlet property="songsTableView" destination="Xtr-4f-8Lq" id="jnw-sp-1iQ"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="SdK-bP-sMW" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
