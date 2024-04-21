@@ -9,6 +9,7 @@ import UIKit
 
 class SongsTableViewCell: UITableViewCell {
 
+  @IBOutlet weak var spotifyImage: UIImageView!
   @IBOutlet weak var songImage: UIImageView!
   @IBOutlet weak var artistLabel: UILabel!
   @IBOutlet weak var nameLabel: UILabel!

@@ -10,40 +10,36 @@ import AVFoundation
 
 class AudioViewController: UIViewController {
 
-    @IBOutlet weak var playButton: UIButton!
-    @IBOutlet weak var progressView: UIProgressView!
-    var player: AVPlayer?
-    var timer: Timer?
+  var songs: [Song] = []
 
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        if let url = URL(string: "https://p.scdn.co/mp3-preview/047e8976e8c483bfe9ccdc8773b429319741e99b?cid=d9219a18c2ed48e685ea287cbfcdda95") {
-            let playerItem = AVPlayerItem(url: url)
-            player = AVPlayer(playerItem: playerItem)
-        }
-      playButton.setImage(UIImage(named: "play"), for: .normal)
-    }
+  override func viewDidLoad() {
+    super.viewDidLoad()
+  }
 
-    @IBAction func playButtonAction(_ sender: Any) {
-        guard let player = player else { return }
+  override func viewDidAppear(_ animated: Bool) {
+    fetchSongsFromUserDefaults()
+    print(songs)
+  }
 
-        if player.rate == 0 {
-            player.play()
-          playButton.setImage(UIImage(named: "pause"), for: .normal)
-            timer = Timer.scheduledTimer(timeInterval: 0.1, target: self, selector: #selector(updateProgress), userInfo: nil, repeats: true)
-        } else {
-            player.pause()
-          playButton.setImage(UIImage(named: "play"), for: .normal)
-          timer?.invalidate()
-            timer = nil
-        }
-    }
+  func fetchSongsFromUserDefaults() {
+      guard let songsDataArray = UserDefaults.standard.array(forKey: "songs") as? [Data] else {
+          print("No songs data found in UserDefaults.")
+          return
+      }
 
-    @objc func updateProgress() {
-        guard let player = player else { return }
-        let duration = CMTimeGetSeconds(player.currentItem?.duration ?? CMTime.zero)
-        let currentTime = CMTimeGetSeconds(player.currentTime())
-        let progress = Float(currentTime / duration)
-        progressView.setProgress(progress, animated: true)
-    }
+      do {
+          var songs: [Song] = []
+          let decoder = JSONDecoder()
+          for songData in songsDataArray {
+              let song = try decoder.decode(Song.self, from: songData)
+              songs.append(song)
+          }
+
+          self.songs = songs
+          print("Songs fetched successfully.")
+          print("Total Songs: \(songs.count)")
+      } catch {
+          print("Error decoding songs data:", error)
+      }
+  }
 }

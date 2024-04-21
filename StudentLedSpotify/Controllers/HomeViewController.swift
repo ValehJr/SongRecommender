@@ -2,7 +2,7 @@
 //  HomeViewController.swift
 //  StudentLedSpotify
 //
-//  Created by Valeh Cart on 08.04.24.
+//  Created by Valeh Ismayilov on 08.04.24.
 //
 
 import UIKit
@@ -40,12 +40,10 @@ class HomeViewController: UIViewController,UIScrollViewDelegate {
       searchTableView.reloadData()
     }
   }
-
-  var displayedSongsCount = 0
-  let songsPerPage = 9
-
   var player: AVPlayer?
   var timer: Timer?
+
+  var displayedSongsCount = 8
 
   override func viewDidLoad() {
     super.viewDidLoad()
@@ -53,13 +51,12 @@ class HomeViewController: UIViewController,UIScrollViewDelegate {
     songView.isHidden = true
 
     let tapGesture = UITapGestureRecognizer(target: self, action: #selector(songViewTapped))
-
+    songView.addGestureRecognizer(tapGesture)
     searchField.addTarget(self, action: #selector(textFieldDidEndEditingOnExit(_:)), for: .editingDidEndOnExit)
-
   }
 
   @IBAction func refreshAction(_ sender: Any) {
-    displayedSongsCount += songsPerPage
+    displayedSongsCount += 8
     songsTableVIew.reloadData()
   }
 
@@ -76,21 +73,15 @@ class HomeViewController: UIViewController,UIScrollViewDelegate {
   }
 
   func fetchSongs(for query: String) {
-    // Create the URL
     let urlString = "http://127.0.0.1:8000/getrecommendation/?search_string=\(query.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) ?? "")"
     guard let url = URL(string: urlString) else {
       print("Invalid URL")
       return
     }
-
-    // Define the request parameters
     var request = URLRequest(url: url)
     request.httpMethod = "POST"
     request.setValue("application/json", forHTTPHeaderField: "accept")
-    // Set the request body
-
     URLSession.shared.dataTask(with: request) { data, response, error in
-      // Handle response
       if let error = error {
         print("Error fetching data: \(error)")
         return
@@ -126,12 +117,25 @@ class HomeViewController: UIViewController,UIScrollViewDelegate {
   @objc func textFieldDidEndEditingOnExit(_ textField: UITextField) {
     guard let text = textField.text else { return }
     fetchSongs(for: text)
+    displayedSongsCount = 8
   }
 
   @objc func songViewTapped() {
     guard let songViewController = storyboard?.instantiateViewController(withIdentifier: "songVC") as? SongViewController else { return }
     songViewController.modalPresentationStyle = .custom
     songViewController.transitioningDelegate = self
+    if let selectedIndexPath = songsTableVIew.indexPathForSelectedRow {
+      let selectedSong = searchResults[selectedIndexPath.row]
+      songViewController.song = selectedSong
+      songViewController.player = player
+      songViewController.isPlaying = (player?.rate != 0)
+      songViewController.playStateDidChange = { [weak self] isPlaying in
+        self?.playButton.setImage(UIImage(named: isPlaying ? "pause" : "play"), for: .normal)
+        if !isPlaying {
+          self?.player?.pause()
+        }
+      }
+    }
     present(songViewController, animated: true, completion: nil)
   }
 
@@ -181,13 +185,13 @@ class HomeViewController: UIViewController,UIScrollViewDelegate {
 
 extension HomeViewController: UITableViewDelegate, UITableViewDataSource {
   func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-    return searchResults.count
+    return min(displayedSongsCount, searchResults.count)
   }
 
   func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
     if tableView == songsTableVIew {
       let cell = tableView.dequeueReusableCell(withIdentifier: "SongsTableViewCell", for: indexPath) as! SongsTableViewCell
-      let song = searchResults[indexPath.item]
+      let song = searchResults[indexPath.row]
       cell.nameLabel.text = song.track_name
       cell.artistLabel.text = song.artist_name
       if let imageUrl = URL(string: song.image_url) {
@@ -197,11 +201,17 @@ extension HomeViewController: UITableViewDelegate, UITableViewDataSource {
           }
         }
       }
+      if song.mp3_url != nil {
+        cell.spotifyImage.image = nil
+      } else {
+        cell.spotifyImage.image = UIImage(named: "spotify")
+      }
       return cell
     } else {
       let cell = tableView.dequeueReusableCell(withIdentifier: "SearchTableViewCell", for: indexPath) as! SearchTableViewCell
       return cell
     }
+
   }
 
   func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
@@ -218,6 +228,7 @@ extension HomeViewController: UITableViewDelegate, UITableViewDataSource {
     if let mp3UrlString = song.mp3_url, let url = URL(string: mp3UrlString) {
       playButton.setImage(UIImage(named: "play"), for: .normal)
       let playerItem = AVPlayerItem(url: url)
+      player?.pause()
       player = AVPlayer(playerItem: playerItem)
       songView.isHidden = false
     } else if let spotifyUrlString = song.spotify_url, let url = URL(string: spotifyUrlString) {
@@ -228,7 +239,6 @@ extension HomeViewController: UITableViewDelegate, UITableViewDataSource {
     songView.isHidden = false
   }
 }
-
 
 extension HomeViewController: UIViewControllerTransitioningDelegate {
   func presentationController(forPresented presented: UIViewController, presenting: UIViewController?, source: UIViewController) -> UIPresentationController? {

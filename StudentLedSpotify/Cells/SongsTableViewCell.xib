@@ -35,13 +35,22 @@
                         <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <nil key="highlightedColor"/>
                     </label>
+                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="Kdq-iD-ThS">
+                        <rect key="frame" x="316" y="22" width="25" height="25"/>
+                        <constraints>
+                            <constraint firstAttribute="width" constant="25" id="HcQ-Wf-XEu"/>
+                            <constraint firstAttribute="height" constant="25" id="r8q-Ne-xbr"/>
+                        </constraints>
+                    </imageView>
                 </subviews>
                 <color key="backgroundColor" red="0.070588235289999995" green="0.070588235289999995" blue="0.070588235289999995" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                 <constraints>
                     <constraint firstItem="tYM-Oj-yY5" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="14" id="0oK-P3-Vvd"/>
                     <constraint firstItem="wRU-II-S9y" firstAttribute="centerX" secondItem="H2p-sc-9uM" secondAttribute="centerX" constant="-5.5" id="A4R-QR-3ya"/>
                     <constraint firstItem="mGF-eB-GBM" firstAttribute="centerX" secondItem="H2p-sc-9uM" secondAttribute="centerX" constant="-5.5" id="DXU-Tw-Cnx"/>
+                    <constraint firstAttribute="trailing" secondItem="Kdq-iD-ThS" secondAttribute="trailing" constant="20" symbolic="YES" id="FN2-WN-L20"/>
                     <constraint firstItem="tYM-Oj-yY5" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="9" id="Ia8-EA-QKl"/>
+                    <constraint firstAttribute="bottom" secondItem="Kdq-iD-ThS" secondAttribute="bottom" constant="21" id="RNy-B7-bZe"/>
                     <constraint firstItem="wRU-II-S9y" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="9" id="S1Z-IH-SDH"/>
                     <constraint firstItem="mGF-eB-GBM" firstAttribute="top" secondItem="wRU-II-S9y" secondAttribute="bottom" constant="6" id="Vgg-Jv-Nf9"/>
                     <constraint firstItem="wRU-II-S9y" firstAttribute="leading" secondItem="tYM-Oj-yY5" secondAttribute="trailing" constant="8" symbolic="YES" id="ZBL-8d-Sla"/>
@@ -54,6 +63,7 @@
                 <outlet property="artistLabel" destination="mGF-eB-GBM" id="P7f-Ga-B1N"/>
                 <outlet property="nameLabel" destination="wRU-II-S9y" id="C2n-tB-ihQ"/>
                 <outlet property="songImage" destination="tYM-Oj-yY5" id="Sbo-sb-dj0"/>
+                <outlet property="spotifyImage" destination="Kdq-iD-ThS" id="o3h-5C-Wt3"/>
             </connections>
             <point key="canvasLocation" x="32.824427480916029" y="-4.2253521126760569"/>
         </tableViewCell>

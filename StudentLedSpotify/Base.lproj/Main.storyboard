@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="32700.99.1234" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="nu0-aI-yAi">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="32700.99.1234" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="Dqd-Zc-ZTF">
     <device id="retina6_12" orientation="portrait" appearance="light"/>
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="22684"/>
@@ -53,41 +53,10 @@
                     <view key="view" contentMode="scaleToFill" id="jwR-7V-4FQ">
                         <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <subviews>
-                            <progressView opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="750" progressViewStyle="bar" translatesAutoresizingMaskIntoConstraints="NO" id="J7P-3j-kdV">
-                                <rect key="frame" x="16" y="413.33333333333331" width="361" height="2.6666666666666856"/>
-                                <color key="progressTintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                <color key="trackTintColor" white="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                            </progressView>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="uJu-J2-oIC">
-                                <rect key="frame" x="159" y="464" width="60" height="60"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="60" id="d0s-yT-G9K"/>
-                                    <constraint firstAttribute="width" constant="60" id="efT-xi-nnH"/>
-                                </constraints>
-                                <state key="normal" title="Button"/>
-                                <buttonConfiguration key="configuration" style="plain" image="play"/>
-                                <connections>
-                                    <action selector="playButtonAction:" destination="c4T-Aw-GB0" eventType="touchUpInside" id="LC6-ly-4PU"/>
-                                </connections>
-                            </button>
-                        </subviews>
                         <viewLayoutGuide key="safeArea" id="S5F-hs-b14"/>
                         <color key="backgroundColor" red="0.070588235289999995" green="0.070588235289999995" blue="0.070588235289999995" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                        <constraints>
-                            <constraint firstItem="S5F-hs-b14" firstAttribute="trailing" secondItem="J7P-3j-kdV" secondAttribute="trailing" constant="16" id="9Nu-8v-75f"/>
-                            <constraint firstItem="J7P-3j-kdV" firstAttribute="centerY" secondItem="S5F-hs-b14" secondAttribute="centerY" id="9We-YT-kEx"/>
-                            <constraint firstItem="J7P-3j-kdV" firstAttribute="centerX" secondItem="S5F-hs-b14" secondAttribute="centerX" id="H6R-4o-SZm"/>
-                            <constraint firstItem="uJu-J2-oIC" firstAttribute="top" secondItem="J7P-3j-kdV" secondAttribute="bottom" constant="49" id="Ng8-Lb-utc"/>
-                            <constraint firstItem="uJu-J2-oIC" firstAttribute="centerX" secondItem="S5F-hs-b14" secondAttribute="centerX" constant="-7.5" id="s5w-hw-8Be"/>
-                            <constraint firstItem="J7P-3j-kdV" firstAttribute="leading" secondItem="S5F-hs-b14" secondAttribute="leading" constant="16" id="vbY-AT-JaO"/>
-                        </constraints>
                     </view>
                     <tabBarItem key="tabBarItem" title="Item 2" id="yaD-AR-P5b"/>
-                    <connections>
-                        <outlet property="playButton" destination="uJu-J2-oIC" id="MId-IC-BMJ"/>
-                        <outlet property="progressView" destination="J7P-3j-kdV" id="1YE-Og-dxF"/>
-                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="SdK-bP-sMW" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
@@ -303,9 +272,21 @@
                                     <action selector="playButtonAction:" destination="m3q-bP-hFH" eventType="touchUpInside" id="ttl-UI-WAe"/>
                                 </connections>
                             </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="dOJ-bU-x1h">
+                                <rect key="frame" x="319" y="688" width="32" height="32"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="32" id="FkS-WV-0G6"/>
+                                    <constraint firstAttribute="height" constant="32" id="dYa-6G-QBv"/>
+                                </constraints>
+                                <state key="normal" title="Button"/>
+                                <buttonConfiguration key="configuration" style="plain" image="heart"/>
+                                <connections>
+                                    <action selector="heartButtonAction:" destination="m3q-bP-hFH" eventType="touchUpInside" id="Wcc-BG-las"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="zu2-C5-NB3"/>
-                        <color key="backgroundColor" red="0.070588235289999995" green="0.070588235289999995" blue="0.070588235289999995" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <color key="backgroundColor" systemColor="systemGrayColor"/>
                         <constraints>
                             <constraint firstItem="zu2-C5-NB3" firstAttribute="trailing" secondItem="xSt-8d-RgW" secondAttribute="trailing" constant="21" id="1Z1-aj-uff"/>
                             <constraint firstItem="qHY-hh-ZIk" firstAttribute="centerX" secondItem="zu2-C5-NB3" secondAttribute="centerX" id="3QK-JS-Bmr"/>
@@ -321,13 +302,16 @@
                             <constraint firstItem="SxM-nO-H3U" firstAttribute="leading" secondItem="zu2-C5-NB3" secondAttribute="leading" constant="21" id="Ubx-r7-Ugh"/>
                             <constraint firstItem="xSt-8d-RgW" firstAttribute="leading" secondItem="zu2-C5-NB3" secondAttribute="leading" constant="21" id="Urt-88-QDr"/>
                             <constraint firstItem="qHY-hh-ZIk" firstAttribute="top" secondItem="kbo-Og-tgD" secondAttribute="bottom" constant="39" id="WFU-vn-BXf"/>
+                            <constraint firstItem="dOJ-bU-x1h" firstAttribute="top" secondItem="kbo-Og-tgD" secondAttribute="bottom" constant="56" id="ajT-qZ-ID4"/>
                             <constraint firstItem="zu2-C5-NB3" firstAttribute="trailing" secondItem="kbo-Og-tgD" secondAttribute="trailing" constant="22" id="bNt-MP-uI5"/>
                             <constraint firstItem="zu2-C5-NB3" firstAttribute="bottom" secondItem="qHY-hh-ZIk" secondAttribute="bottom" constant="80" id="vBD-Nk-5FQ"/>
                             <constraint firstItem="SxM-nO-H3U" firstAttribute="top" secondItem="paW-Gq-e6C" secondAttribute="bottom" constant="8" symbolic="YES" id="xfr-TB-685"/>
+                            <constraint firstItem="zu2-C5-NB3" firstAttribute="trailing" secondItem="dOJ-bU-x1h" secondAttribute="trailing" constant="42" id="yaK-q0-h0d"/>
                         </constraints>
                     </view>
                     <connections>
                         <outlet property="artistName" destination="SxM-nO-H3U" id="wgf-zs-huQ"/>
+                        <outlet property="heartButton" destination="dOJ-bU-x1h" id="QKa-HJ-kDq"/>
                         <outlet property="playButton" destination="qHY-hh-ZIk" id="Odq-qC-rpO"/>
                         <outlet property="songImage" destination="xSt-8d-RgW" id="Eck-Uc-wKL"/>
                         <outlet property="songName" destination="paW-Gq-e6C" id="UYV-V7-3Qo"/>
@@ -377,11 +361,15 @@
     </scenes>
     <resources>
         <image name="down" width="22" height="22"/>
-        <image name="pause" width="60" height="60"/>
+        <image name="heart" width="25" height="25"/>
+        <image name="pause" width="25" height="25"/>
         <image name="play" width="25" height="25"/>
         <image name="search" width="21" height="21"/>
         <systemColor name="systemBackgroundColor">
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+        </systemColor>
+        <systemColor name="systemGrayColor">
+            <color red="0.5568627451" green="0.5568627451" blue="0.57647058819999997" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>
     </resources>
 </document>

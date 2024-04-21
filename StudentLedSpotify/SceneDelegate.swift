@@ -15,21 +15,6 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
   func scene(_ scene: UIScene, willConnectTo session: UISceneSession, options connectionOptions: UIScene.ConnectionOptions) {
 
     guard let windowScene = (scene as? UIWindowScene) else { return }
-
-    let window = UIWindow(windowScene: windowScene)
-
-    if AuthManger.shared.isSignedIn {
-      let storyboard = UIStoryboard(name: "Main", bundle: nil)
-      let mainVC = storyboard.instantiateViewController(withIdentifier: "tabBarVC") as! TabBarController
-      window.rootViewController = mainVC
-    }else{
-      let storyboard = UIStoryboard(name: "Main", bundle: nil)
-      let loginVC = storyboard.instantiateViewController(withIdentifier: "tabBarVC") as! LoginViewController
-        window.rootViewController = loginVC
-    }
-
-    window.makeKeyAndVisible()
-    self.window = window
   }
 
   func sceneDidDisconnect(_ scene: UIScene) {
