@@ -10,6 +10,7 @@ import AVFoundation
 
 class SongViewController: UIViewController {
 
+  // MARK: Outlets
   @IBOutlet weak var heartButton: UIButton!
   @IBOutlet weak var playButton: UIButton!
   @IBOutlet weak var songProgress: UIProgressView!
@@ -17,18 +18,22 @@ class SongViewController: UIViewController {
   @IBOutlet weak var songName: UILabel!
   @IBOutlet weak var songImage: UIImageView!
 
+  // MARK: Variables
   var player: AVPlayer?
   var song_progress: Float?
   var timer:Timer?
   var isPlaying: Bool = false
-
   var song:Song?
-
   var playStateDidChange: ((Bool) -> Void)?
 
+  // MARK: Managers
+  let songFetcher = SongFetcher.shared
+  let timeManager = TimeManager.shared
+
+
+  // MARK: Lifecycle Methods
   override func viewDidLoad() {
     super.viewDidLoad()
-
     if isSongSaved() {
       heartButton.setImage(UIImage(named: "heartFilled"), for: .normal)
     } else {
@@ -41,22 +46,10 @@ class SongViewController: UIViewController {
     songFetch()
     let imageName = isPlaying ? "pause" : "play"
     playButton.setImage(UIImage(named: imageName), for: .normal)
-    startTimer()
+    timeManager.startTimer(target: self, selector: #selector(updateProgress))
   }
 
-  func songFetch(){
-    artistName.text = song?.artist_name
-    songName.text = song?.track_name
-    songProgress.progress = song_progress ?? 0
-    if let imageUrl = URL(string: song?.image_url ?? " ") {
-      loadImage(from: imageUrl) { (image) in
-        DispatchQueue.main.async{
-          self.songImage.image = image
-        }
-      }
-    }
-  }
-
+  // MARK: Button Functions
   @IBAction func heartButtonAction(_ sender: Any) {
     if isSongSaved() {
       deleteSongFromUserDefaults()
@@ -67,12 +60,32 @@ class SongViewController: UIViewController {
     }
   }
 
+  @IBAction func downButtonAction(_ sender: Any) {
+    transitioningDelegate = self
+    timeManager.stopTimer()
+    dismiss(animated: true, completion: nil)
+  }
+
+  @IBAction func playButtonAction(_ sender: Any) {
+    guard let player = player else { return }
+    if player.rate == 0 {
+      player.play()
+      playButton.setImage(UIImage(named: "pause"), for: .normal)
+      timeManager.startTimer(target: self, selector: #selector(updateProgress))
+    } else {
+      player.pause()
+      playButton.setImage(UIImage(named: "play"), for: .normal)
+      timeManager.stopTimer()
+    }
+    playStateDidChange?(player.rate != 0)
+  }
+
+  // MARK: UserDefaults save and delete functionality
   func saveSongToUserDefaults() {
     guard let song = song else {
       print("No song to save.")
       return
     }
-
     do {
       let encoder = JSONEncoder()
       let songData = try encoder.encode(song)
@@ -126,57 +139,21 @@ class SongViewController: UIViewController {
   }
 
 
-
-  @IBAction func downButtonAction(_ sender: Any) {
-    transitioningDelegate = self
-    stopTimer()
-    dismiss(animated: true, completion: nil)
-  }
-
-  @IBAction func playButtonAction(_ sender: Any) {
-    guard let player = player else { return }
-
-    if player.rate == 0 {
-      player.play()
-      playButton.setImage(UIImage(named: "pause"), for: .normal)
-      startTimer()
-    } else {
-      player.pause()
-      playButton.setImage(UIImage(named: "play"), for: .normal)
-      stopTimer()
-    }
-    playStateDidChange?(player.rate != 0)
-  }
-
-  func startTimer() {
-    timer = Timer.scheduledTimer(timeInterval: 0.1, target: self, selector: #selector(updateProgress), userInfo: nil, repeats: true)
-  }
-
-  func loadImage(from url: URL, completion: @escaping (UIImage?) -> Void) {
-    let session = URLSession.shared
-    let task = session.dataTask(with: url) { (data, response, error) in
-      if let error = error {
-        print("Error loading image: \(error)")
-        completion(nil)
-        return
+  // MARK: common functions
+  func songFetch(){
+    artistName.text = song?.artist_name
+    songName.text = song?.track_name
+    songProgress.progress = song_progress ?? 0
+    if let imageUrl = URL(string: song?.image_url ?? " ") {
+      songFetcher.loadImage(from: imageUrl) { (image) in
+        DispatchQueue.main.async{
+          self.songImage.image = image
+        }
       }
-
-      guard let data = data, let image = UIImage(data: data) else {
-        print("Invalid image data")
-        completion(nil)
-        return
-      }
-      completion(image)
     }
-
-    task.resume()
   }
 
-  func stopTimer() {
-    timer?.invalidate()
-    timer = nil
-  }
-
+  // MARK: objc functions
   @objc func updateProgress() {
     guard let player = player else { return }
     let duration = CMTimeGetSeconds(player.currentItem?.duration ?? CMTime.zero)

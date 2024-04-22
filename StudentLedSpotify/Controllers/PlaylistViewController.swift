@@ -1,24 +1,24 @@
 //
-//  HomeViewController.swift
+//  PlaylistViewController.swift
 //  StudentLedSpotify
 //
-//  Created by Valeh Ismayilov on 08.04.24.
+//  Created by Valeh Ismayilov on 22.04.24.
 //
 
 import UIKit
 import AVFoundation
 
-class HomeViewController: UIViewController, UIScrollViewDelegate {
+class PlaylistViewController: UIViewController {
 
   // MARK: Outlets
-  @IBOutlet weak var refreshButton: UIButton!
-  @IBOutlet weak var songProgress: UIProgressView!
-  @IBOutlet weak var songName: UILabel!
-  @IBOutlet weak var songImage: UIImageView!
-  @IBOutlet weak var artistName: UILabel!
   @IBOutlet weak var playButton: UIButton!
+  @IBOutlet weak var songProgress: UIProgressView!
+  @IBOutlet weak var songImageView: UIImageView!
+  @IBOutlet weak var artistName: UILabel!
+  @IBOutlet weak var songName: UILabel!
   @IBOutlet weak var songView: UIView!
-  @IBOutlet weak var searchField: PaddedTextField!
+  @IBOutlet weak var searchTextField: PaddedTextField!
+  @IBOutlet weak var refreshButton: UIButton!
   @IBOutlet weak var songsTableVIew: UITableView! {
     didSet {
       songsTableVIew.delegate = self
@@ -45,7 +45,7 @@ class HomeViewController: UIViewController, UIScrollViewDelegate {
     songView.isHidden = true
     let tapGesture = UITapGestureRecognizer(target: self, action: #selector(songViewTapped))
     songView.addGestureRecognizer(tapGesture)
-    searchField.addTarget(self, action: #selector(textFieldDidEndEditingOnExit(_:)), for: .editingDidEndOnExit)
+    searchTextField.addTarget(self, action: #selector(textFieldDidEndEditingOnExit(_:)), for: .editingDidEndOnExit)
   }
 
   override func viewDidAppear(_ animated: Bool) {
@@ -55,8 +55,8 @@ class HomeViewController: UIViewController, UIScrollViewDelegate {
   // MARK: UI Setup
   func UISetup() {
     let placeholderColor = UIColor(red: 19/255, green: 19/255, blue: 19/255, alpha: 1)
-    searchField.layer.cornerRadius = 15
-    searchField.attributedPlaceholder = NSAttributedString(string: "Artists or songs", attributes: [NSAttributedString.Key.foregroundColor: placeholderColor])
+    searchTextField.layer.cornerRadius = 15
+    searchTextField.attributedPlaceholder = NSAttributedString(string: "Playlist url...", attributes: [NSAttributedString.Key.foregroundColor: placeholderColor])
     songView.layer.cornerRadius = 7
     refreshButton.backgroundColor = .white
     refreshButton.layer.cornerRadius = 16
@@ -66,12 +66,11 @@ class HomeViewController: UIViewController, UIScrollViewDelegate {
 
   // MARK: Tab Bar Configuration
   func tabBarConfigure(){
-    let tabBarItem = UITabBarItem(title: "Song", image: UIImage(named: "searchGray"), selectedImage: UIImage(named: "searchWhite"))
+    let tabBarItem = UITabBarItem(title: "Playlist", image: UIImage(named: "searchGray"), selectedImage: UIImage(named: "searchWhite"))
     self.tabBarItem = tabBarItem
   }
-
-  // MARK: IBActions
-  @IBAction func refreshAction(_ sender: Any) {
+  
+  @IBAction func refreshButtonAction(_ sender: Any) {
     displayedSongsCount += 8
     songsTableVIew.reloadData()
   }
@@ -88,7 +87,7 @@ class HomeViewController: UIViewController, UIScrollViewDelegate {
       timeManager.stopTimer()
     }
   }
-
+  
   // MARK: Helper Methods
   @objc func updateProgress() {
     guard let player = player else { return }
@@ -139,7 +138,7 @@ class HomeViewController: UIViewController, UIScrollViewDelegate {
 }
 
 // MARK: Table View Data Source & Delegate
-extension HomeViewController: UITableViewDelegate, UITableViewDataSource {
+extension PlaylistViewController: UITableViewDelegate, UITableViewDataSource {
   func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
     return min(displayedSongsCount, recomendSongs.count)
   }
@@ -171,7 +170,7 @@ extension HomeViewController: UITableViewDelegate, UITableViewDataSource {
     if let imageUrl = URL(string: song.image_url) {
       songFetcher.loadImage(from: imageUrl) { (image) in
         DispatchQueue.main.async{
-          self.songImage.image = image
+          self.songImageView.image = image
         }
       }
     }
@@ -189,9 +188,8 @@ extension HomeViewController: UITableViewDelegate, UITableViewDataSource {
     songView.isHidden = false
   }
 }
-
 // MARK: Transition Delegate
-extension HomeViewController: UIViewControllerTransitioningDelegate {
+extension PlaylistViewController: UIViewControllerTransitioningDelegate {
   func presentationController(forPresented presented: UIViewController, presenting: UIViewController?, source: UIViewController) -> UIPresentationController? {
     return SongPresentationController(presentedViewController: presented, presenting: presenting)
   }
@@ -204,3 +202,4 @@ extension HomeViewController: UIViewControllerTransitioningDelegate {
     return nil
   }
 }
+

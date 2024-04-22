@@ -8,7 +8,7 @@
 import UIKit
 import AVFoundation
 
-class AudioViewController: UIViewController {
+class LikedViewController: UIViewController {
 
   @IBOutlet weak var songsTableView: UITableView! {
     didSet {
@@ -25,14 +25,21 @@ class AudioViewController: UIViewController {
     }
   }
 
+  let songFetcher = SongFetcher.shared
+
   override func viewDidLoad() {
     super.viewDidLoad()
     songsTableView.dataSource = self
     songsTableView.delegate = self
+
+    let tabBarItem = UITabBarItem(title: "Liked", image: UIImage(named: "heart"), selectedImage: UIImage(named: "heartFilled"))
+    self.tabBarItem = tabBarItem
   }
 
   override func viewDidAppear(_ animated: Bool) {
     fetchSongsFromUserDefaults()
+    let tabBarItem = UITabBarItem(title: "Liked", image: UIImage(named: "heart"), selectedImage: UIImage(named: "heartFilled"))
+    self.tabBarItem = tabBarItem
   }
 
   func fetchSongsFromUserDefaults() {
@@ -48,38 +55,14 @@ class AudioViewController: UIViewController {
               let song = try decoder.decode(Song.self, from: songData)
               songs.append(song)
           }
-
           self.songs = songs
-          print("Songs fetched successfully.")
-          print("Total Songs: \(songs.count)")
       } catch {
           print("Error decoding songs data:", error)
       }
   }
-
-  func loadImage(from url: URL, completion: @escaping (UIImage?) -> Void) {
-    let session = URLSession.shared
-    let task = session.dataTask(with: url) { (data, response, error) in
-      if let error = error {
-        print("Error loading image: \(error)")
-        completion(nil)
-        return
-      }
-
-      guard let data = data, let image = UIImage(data: data) else {
-        print("Invalid image data")
-        completion(nil)
-        return
-      }
-      completion(image)
-    }
-
-    task.resume()
-  }
-
 }
 
-extension AudioViewController:UITableViewDelegate,UITableViewDataSource {
+extension LikedViewController:UITableViewDelegate,UITableViewDataSource {
   func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
     return songs.count
   }
@@ -90,7 +73,7 @@ extension AudioViewController:UITableViewDelegate,UITableViewDataSource {
     cell.nameLabel.text = song.track_name
     cell.artistLabel.text = song.artist_name
     if let imageUrl = URL(string: song.image_url) {
-      loadImage(from: imageUrl) { (image) in
+      songFetcher.loadImage(from: imageUrl) { (image) in
         DispatchQueue.main.async{
           cell.songImage.image = image
         }
