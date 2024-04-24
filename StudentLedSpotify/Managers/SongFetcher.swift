@@ -11,16 +11,13 @@ class SongFetcher {
   static let shared = SongFetcher()
 
   func fetchSongs(for query: String, completion: @escaping ([Song]?, Error?) -> Void) {
-    let urlString = "http://127.0.0.1:8000/getrecommendation/?search_string=\(query.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) ?? "")"
+    let urlString = "http://127.0.0.1:8000/getsongrecommendations/?song_query=\(query.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) ?? "")"
     guard let url = URL(string: urlString) else {
       print("Invalid URL")
       completion(nil, nil)
       return
     }
-    var request = URLRequest(url: url)
-    request.httpMethod = "POST"
-    request.setValue("application/json", forHTTPHeaderField: "accept")
-    URLSession.shared.dataTask(with: request) { data, response, error in
+    URLSession.shared.dataTask(with: url) { data, response, error in
       if let error = error {
         print("Error fetching data: \(error)")
         completion(nil, error)
@@ -55,8 +52,54 @@ class SongFetcher {
     }.resume()
   }
 
+  func fetchPlaylistSongs(for query: String, completion: @escaping (Playlist?,Error?) -> Void) {
+    let urlString = "http://127.0.0.1:8000/getplaylistrecommendations/?playlist_url=\(query.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) ?? "")"
+
+    guard let url = URL(string: urlString) else {
+      print("Invalid url")
+      completion(nil,nil)
+      return
+    }
+
+    URLSession.shared.dataTask(with: url){ data, response, error in
+      if let error = error {
+        print("Error fetching data:\(error.localizedDescription)")
+        completion(nil,nil)
+        return
+      }
+
+      guard let httpResponse = response as? HTTPURLResponse else {
+        print("Invalid HTTP response")
+        completion(nil,nil)
+        return
+      }
+
+      guard httpResponse.statusCode == 200 else {
+        print("HTTP status code: \(httpResponse.statusCode)")
+        completion(nil, nil)
+        return
+      }
+
+      guard let data = data else {
+        print("No data received")
+        completion(nil, nil)
+        return
+      }
+
+      do {
+        let playlist = try JSONDecoder().decode(Playlist.self, from: data)
+        completion(playlist, nil)
+      } catch {
+        print("Error decoding JSON: \(error)")
+        completion(nil, error)
+      }
+
+    }.resume()
+  }
+
   func loadImage(from url: URL, completion: @escaping (UIImage?) -> Void) {
     let session = URLSession.shared
+
     let task = session.dataTask(with: url) { (data, response, error) in
       if let error = error {
         print("Error loading image: \(error)")
@@ -71,7 +114,6 @@ class SongFetcher {
       }
       completion(image)
     }
-
     task.resume()
   }
 }

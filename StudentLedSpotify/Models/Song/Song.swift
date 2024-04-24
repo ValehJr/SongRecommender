@@ -6,6 +6,7 @@
 //
 
 import Foundation
+//Song structure
 struct Song:Codable {
     let track_name: String
     let artist_name: String
@@ -18,4 +19,13 @@ struct Song:Codable {
   static func == (lhs: Song, rhs: Song) -> Bool {
           return lhs.track_id == rhs.track_id
       }
+}
+// Playlist structure
+struct Playlist: Codable {
+    let username: String
+    let playlist: String
+    let n_tracks: Int
+    let image: String
+    let duration: String
+    let songs: [Song]
 }

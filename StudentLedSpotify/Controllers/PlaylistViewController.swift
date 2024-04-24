@@ -29,7 +29,7 @@ class PlaylistViewController: UIViewController {
   }
 
   // MARK: Properties
-  var recomendSongs: [Song] = []
+  var playlist: Playlist?
 
   var player: AVPlayer?
   var timer: Timer?
@@ -69,7 +69,7 @@ class PlaylistViewController: UIViewController {
     let tabBarItem = UITabBarItem(title: "Playlist", image: UIImage(named: "searchGray"), selectedImage: UIImage(named: "searchWhite"))
     self.tabBarItem = tabBarItem
   }
-  
+
   @IBAction func refreshButtonAction(_ sender: Any) {
     displayedSongsCount += 8
     songsTableVIew.reloadData()
@@ -87,7 +87,7 @@ class PlaylistViewController: UIViewController {
       timeManager.stopTimer()
     }
   }
-  
+
   // MARK: Helper Methods
   @objc func updateProgress() {
     guard let player = player else { return }
@@ -100,14 +100,14 @@ class PlaylistViewController: UIViewController {
   // MARK: Text Field Actions
   @objc func textFieldDidEndEditingOnExit(_ textField: UITextField) {
     guard let text = textField.text else { return }
-    songFetcher.fetchSongs(for: text){[weak self] songs, error in
+    songFetcher.fetchPlaylistSongs(for: text) { [weak self] fetchedPlaylist, error in
       guard let self = self else { return }
       if let error = error {
-        print("Error fetching songs: \(error)")
+        print("Error fetching playlist: \(error)")
         return
       }
-      if let songs = songs {
-        self.recomendSongs = songs
+      if let fetchedPlaylist = fetchedPlaylist {
+        self.playlist = fetchedPlaylist
         DispatchQueue.main.async {
           self.songsTableVIew.reloadData()
         }
@@ -122,7 +122,7 @@ class PlaylistViewController: UIViewController {
     songViewController.modalPresentationStyle = .custom
     songViewController.transitioningDelegate = self
     if let selectedIndexPath = songsTableVIew.indexPathForSelectedRow {
-      let selectedSong = recomendSongs[selectedIndexPath.row]
+      let selectedSong = playlist?.songs[selectedIndexPath.row]
       songViewController.song = selectedSong
       songViewController.player = player
       songViewController.isPlaying = (player?.rate != 0)
@@ -140,31 +140,35 @@ class PlaylistViewController: UIViewController {
 // MARK: Table View Data Source & Delegate
 extension PlaylistViewController: UITableViewDelegate, UITableViewDataSource {
   func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-    return min(displayedSongsCount, recomendSongs.count)
+    return min(displayedSongsCount, playlist?.songs.count ?? 0)
   }
 
   func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-      let cell = tableView.dequeueReusableCell(withIdentifier: "SongsTableViewCell", for: indexPath) as! SongsTableViewCell
-      let song = recomendSongs[indexPath.row]
-      cell.nameLabel.text = song.track_name
-      cell.artistLabel.text = song.artist_name
-      if let imageUrl = URL(string: song.image_url) {
-        songFetcher.loadImage(from: imageUrl) { (image) in
-          DispatchQueue.main.async{
-            cell.songImage.image = image
-          }
+    let cell = tableView.dequeueReusableCell(withIdentifier: "SongsTableViewCell", for: indexPath) as! SongsTableViewCell
+    guard let song = playlist?.songs[indexPath.row] else {
+      return cell
+    }
+    cell.nameLabel.text = song.track_name
+    cell.artistLabel.text = song.artist_name
+    if let imageUrl = URL(string: song.image_url) {
+      songFetcher.loadImage(from: imageUrl) { (image) in
+        DispatchQueue.main.async{
+          cell.songImage.image = image
         }
       }
-      if song.mp3_url != nil {
-        cell.spotifyImage.image = nil
-      } else {
-        cell.spotifyImage.image = UIImage(named: "spotify")
-      }
-      return cell
+    }
+    if song.mp3_url != nil {
+      cell.spotifyImage.image = nil
+    } else {
+      cell.spotifyImage.image = UIImage(named: "spotify")
+    }
+    return cell
   }
 
   func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-    let song = recomendSongs[indexPath.item]
+    guard let song = playlist?.songs[indexPath.row] else {
+      return
+    }
     songName.text = song.track_name
     artistName.text = song.artist_name
     if let imageUrl = URL(string: song.image_url) {
@@ -188,6 +192,7 @@ extension PlaylistViewController: UITableViewDelegate, UITableViewDataSource {
     songView.isHidden = false
   }
 }
+
 // MARK: Transition Delegate
 extension PlaylistViewController: UIViewControllerTransitioningDelegate {
   func presentationController(forPresented presented: UIViewController, presenting: UIViewController?, source: UIViewController) -> UIPresentationController? {
