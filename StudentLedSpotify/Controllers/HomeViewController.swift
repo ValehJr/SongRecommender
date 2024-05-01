@@ -7,6 +7,7 @@
 
 import UIKit
 import AVFoundation
+import Lottie
 
 class HomeViewController: UIViewController, UIScrollViewDelegate {
 
@@ -37,6 +38,9 @@ class HomeViewController: UIViewController, UIScrollViewDelegate {
 
   let songFetcher = SongFetcher.shared
   let timeManager = TimeManager.shared
+  let animationManager = AnimationManager.shared
+
+  var animationView: LottieAnimationView!
 
   // MARK: Lifecycle Methods
   override func viewDidLoad() {
@@ -63,6 +67,18 @@ class HomeViewController: UIViewController, UIScrollViewDelegate {
     refreshButton.titleLabel?.font = UIFont(name: "AvenirNext-Medium", size: 16)
     tabBarConfigure()
   }
+
+  func setupAnimation() {
+    animationView = animationManager.setupAnimationInView(view)
+  }
+
+  func removeAnimation() {
+      if let animationView = animationView {
+        self.animationManager.removeAnimation(animationView)
+          self.animationView = nil
+      }
+  }
+
 
   // MARK: Tab Bar Configuration
   func tabBarConfigure(){
@@ -100,21 +116,47 @@ class HomeViewController: UIViewController, UIScrollViewDelegate {
 
   // MARK: Text Field Actions
   @objc func textFieldDidEndEditingOnExit(_ textField: UITextField) {
+    setupAnimation()
+    recomendSongs = []
+    songsTableVIew.reloadData()
     guard let text = textField.text else { return }
     songFetcher.fetchSongs(for: text){[weak self] songs, error in
       guard let self = self else { return }
       if let error = error {
         print("Error fetching songs: \(error)")
+        DispatchQueue.main.async {
+          if self.recomendSongs != nil {
+            self.removeAnimation()
+          }
+          self.showAlert(message: error.localizedDescription)
+        }
         return
       }
       if let songs = songs {
         self.recomendSongs = songs
         DispatchQueue.main.async {
           self.songsTableVIew.reloadData()
+          if self.recomendSongs != nil {
+            self.removeAnimation()
+          }
         }
       }
     }
     displayedSongsCount = 8
+  }
+
+  func showAlert(message: String) {
+    DispatchQueue.main.async {
+      if let animationView = self.animationView {
+        animationView.removeFromSuperview()
+      }
+      let alertController = UIAlertController(title: "Error", message: message, preferredStyle: .alert)
+      alertController.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
+      if let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene,
+         let topViewController = windowScene.windows.first?.rootViewController {
+        topViewController.present(alertController, animated: true, completion: nil)
+      }
+    }
   }
 
   // MARK: Song View Gesture

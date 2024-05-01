@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		1D0082F12BD6E06E001EEC91 /* PlaylistViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D0082F02BD6E06E001EEC91 /* PlaylistViewController.swift */; };
+		1D051A3A2BDA61A8001778AF /* Lottie in Frameworks */ = {isa = PBXBuildFile; productRef = 1D051A392BDA61A8001778AF /* Lottie */; };
 		1D2F23A12BC2C7020023FA2A /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D2F23A02BC2C7020023FA2A /* AppDelegate.swift */; };
 		1D2F23A32BC2C7020023FA2A /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D2F23A22BC2C7020023FA2A /* SceneDelegate.swift */; };
 		1D2F23A82BC2C7020023FA2A /* Base in Resources */ = {isa = PBXBuildFile; fileRef = 1D2F23A72BC2C7020023FA2A /* Base */; };
@@ -19,11 +20,16 @@
 		1D50F5212BC3EB9E00B9B72D /* PaddedTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D50F5202BC3EB9E00B9B72D /* PaddedTextField.swift */; };
 		1D50F5252BC3EC3A00B9B72D /* SongsTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D50F5232BC3EC3A00B9B72D /* SongsTableViewCell.swift */; };
 		1D50F5262BC3EC3A00B9B72D /* SongsTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1D50F5242BC3EC3A00B9B72D /* SongsTableViewCell.xib */; };
+		1D711F4D2BDA9FD100A0F0B5 /* loading.json in Resources */ = {isa = PBXBuildFile; fileRef = 1D711F4C2BDA9FD100A0F0B5 /* loading.json */; };
 		1D76DF272BCC31B300C055D2 /* SearchTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D76DF252BCC31B300C055D2 /* SearchTableViewCell.swift */; };
 		1D76DF282BCC31B300C055D2 /* SearchTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1D76DF262BCC31B300C055D2 /* SearchTableViewCell.xib */; };
 		1D779B062BC50B230000852F /* LikedViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D779B052BC50B230000852F /* LikedViewController.swift */; };
+		1DD679DD2BE2242B0030B491 /* HeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1DD679DC2BE2242B0030B491 /* HeaderView.swift */; };
+		1DD679DF2BE224380030B491 /* HeaderView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1DD679DE2BE224380030B491 /* HeaderView.xib */; };
+		1DD679E12BE225340030B491 /* UIViewExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1DD679E02BE225330030B491 /* UIViewExtension.swift */; };
 		1DDA83B42BD6C5480085CFE6 /* SongFetcher.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1DDA83B32BD6C5480085CFE6 /* SongFetcher.swift */; };
 		1DDA83B62BD6C7E80085CFE6 /* TimeManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1DDA83B52BD6C7E80085CFE6 /* TimeManager.swift */; };
+		1DF3652C2BDB748400C036F9 /* AnimationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1DF3652B2BDB748400C036F9 /* AnimationManager.swift */; };
 		1DF6EFAB2BCA660C0042B6B6 /* SongViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1DF6EFAA2BCA660C0042B6B6 /* SongViewController.swift */; };
 		1DF6EFAD2BCA7A350042B6B6 /* SongPresentationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1DF6EFAC2BCA7A350042B6B6 /* SongPresentationController.swift */; };
 		1DF6EFAF2BCA7A730042B6B6 /* SongTransitionAnimator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1DF6EFAE2BCA7A730042B6B6 /* SongTransitionAnimator.swift */; };
@@ -45,11 +51,16 @@
 		1D50F5202BC3EB9E00B9B72D /* PaddedTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaddedTextField.swift; sourceTree = "<group>"; };
 		1D50F5232BC3EC3A00B9B72D /* SongsTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SongsTableViewCell.swift; sourceTree = "<group>"; };
 		1D50F5242BC3EC3A00B9B72D /* SongsTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = SongsTableViewCell.xib; sourceTree = "<group>"; };
+		1D711F4C2BDA9FD100A0F0B5 /* loading.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = loading.json; sourceTree = "<group>"; };
 		1D76DF252BCC31B300C055D2 /* SearchTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchTableViewCell.swift; sourceTree = "<group>"; };
 		1D76DF262BCC31B300C055D2 /* SearchTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = SearchTableViewCell.xib; sourceTree = "<group>"; };
 		1D779B052BC50B230000852F /* LikedViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LikedViewController.swift; sourceTree = "<group>"; };
+		1DD679DC2BE2242B0030B491 /* HeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HeaderView.swift; sourceTree = "<group>"; };
+		1DD679DE2BE224380030B491 /* HeaderView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = HeaderView.xib; sourceTree = "<group>"; };
+		1DD679E02BE225330030B491 /* UIViewExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIViewExtension.swift; sourceTree = "<group>"; };
 		1DDA83B32BD6C5480085CFE6 /* SongFetcher.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SongFetcher.swift; sourceTree = "<group>"; };
 		1DDA83B52BD6C7E80085CFE6 /* TimeManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimeManager.swift; sourceTree = "<group>"; };
+		1DF3652B2BDB748400C036F9 /* AnimationManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnimationManager.swift; sourceTree = "<group>"; };
 		1DF6EFAA2BCA660C0042B6B6 /* SongViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SongViewController.swift; sourceTree = "<group>"; };
 		1DF6EFAC2BCA7A350042B6B6 /* SongPresentationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SongPresentationController.swift; sourceTree = "<group>"; };
 		1DF6EFAE2BCA7A730042B6B6 /* SongTransitionAnimator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SongTransitionAnimator.swift; sourceTree = "<group>"; };
@@ -61,6 +72,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				1D051A3A2BDA61A8001778AF /* Lottie in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -89,6 +101,9 @@
 				1D2F23A02BC2C7020023FA2A /* AppDelegate.swift */,
 				1D2F23A22BC2C7020023FA2A /* SceneDelegate.swift */,
 				1D2F23A62BC2C7020023FA2A /* Main.storyboard */,
+				1DD679DC2BE2242B0030B491 /* HeaderView.swift */,
+				1DD679DE2BE224380030B491 /* HeaderView.xib */,
+				1DD679E02BE225330030B491 /* UIViewExtension.swift */,
 				1D2F23B92BC2C8310023FA2A /* Models */,
 				1D2F23B42BC2C7290023FA2A /* Managers */,
 				1D50F5162BC3B22000B9B72D /* Controllers */,
@@ -106,6 +121,7 @@
 			children = (
 				1DDA83B32BD6C5480085CFE6 /* SongFetcher.swift */,
 				1DDA83B52BD6C7E80085CFE6 /* TimeManager.swift */,
+				1DF3652B2BDB748400C036F9 /* AnimationManager.swift */,
 			);
 			path = Managers;
 			sourceTree = "<group>";
@@ -141,6 +157,7 @@
 		1D50F51F2BC3EB9000B9B72D /* Customs */ = {
 			isa = PBXGroup;
 			children = (
+				1D711F4C2BDA9FD100A0F0B5 /* loading.json */,
 				1D50F5202BC3EB9E00B9B72D /* PaddedTextField.swift */,
 				1DF6EFAC2BCA7A350042B6B6 /* SongPresentationController.swift */,
 				1DF6EFAE2BCA7A730042B6B6 /* SongTransitionAnimator.swift */,
@@ -176,6 +193,9 @@
 			dependencies = (
 			);
 			name = StudentLedSpotify;
+			packageProductDependencies = (
+				1D051A392BDA61A8001778AF /* Lottie */,
+			);
 			productName = StudentLedSpotify;
 			productReference = 1D2F239D2BC2C7020023FA2A /* StudentLedSpotify.app */;
 			productType = "com.apple.product-type.application";
@@ -204,6 +224,9 @@
 				Base,
 			);
 			mainGroup = 1D2F23942BC2C7020023FA2A;
+			packageReferences = (
+				1D051A382BDA61A8001778AF /* XCRemoteSwiftPackageReference "lottie-ios" */,
+			);
 			productRefGroup = 1D2F239E2BC2C7020023FA2A /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -220,9 +243,11 @@
 			files = (
 				1D2F23AA2BC2C7040023FA2A /* Assets.xcassets in Resources */,
 				1D50F5262BC3EC3A00B9B72D /* SongsTableViewCell.xib in Resources */,
+				1D711F4D2BDA9FD100A0F0B5 /* loading.json in Resources */,
 				1D2F23AD2BC2C7040023FA2A /* Base in Resources */,
 				1D2F23A82BC2C7020023FA2A /* Base in Resources */,
 				1D76DF282BCC31B300C055D2 /* SearchTableViewCell.xib in Resources */,
+				1DD679DF2BE224380030B491 /* HeaderView.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -234,8 +259,10 @@
 			buildActionMask = 2147483647;
 			files = (
 				1DDA83B62BD6C7E80085CFE6 /* TimeManager.swift in Sources */,
+				1DD679DD2BE2242B0030B491 /* HeaderView.swift in Sources */,
 				1DDA83B42BD6C5480085CFE6 /* SongFetcher.swift in Sources */,
 				1D50F5212BC3EB9E00B9B72D /* PaddedTextField.swift in Sources */,
+				1DF3652C2BDB748400C036F9 /* AnimationManager.swift in Sources */,
 				1D50F51C2BC3B4E000B9B72D /* TabBarController.swift in Sources */,
 				1DF6EFAD2BCA7A350042B6B6 /* SongPresentationController.swift in Sources */,
 				1DF6EFAB2BCA660C0042B6B6 /* SongViewController.swift in Sources */,
@@ -244,6 +271,7 @@
 				1D0082F12BD6E06E001EEC91 /* PlaylistViewController.swift in Sources */,
 				1D779B062BC50B230000852F /* LikedViewController.swift in Sources */,
 				1D50F5252BC3EC3A00B9B72D /* SongsTableViewCell.swift in Sources */,
+				1DD679E12BE225340030B491 /* UIViewExtension.swift in Sources */,
 				1D2F23A32BC2C7020023FA2A /* SceneDelegate.swift in Sources */,
 				1DF6EFB12BCA7C1F0042B6B6 /* DissmissAnimator.swift in Sources */,
 				1D76DF272BCC31B300C055D2 /* SearchTableViewCell.swift in Sources */,
@@ -471,6 +499,25 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		1D051A382BDA61A8001778AF /* XCRemoteSwiftPackageReference "lottie-ios" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/airbnb/lottie-ios.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 4.4.3;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		1D051A392BDA61A8001778AF /* Lottie */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 1D051A382BDA61A8001778AF /* XCRemoteSwiftPackageReference "lottie-ios" */;
+			productName = Lottie;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 1D2F23952BC2C7020023FA2A /* Project object */;
 }

@@ -8,10 +8,14 @@
 import Foundation
 import UIKit
 
+protocol SongViewControllerDelegate: AnyObject {
+    func songViewControllerDismissed()
+}
+
 class DismissAnimator: NSObject, UIViewControllerAnimatedTransitioning {
 
     func transitionDuration(using transitionContext: UIViewControllerContextTransitioning?) -> TimeInterval {
-        return 0.5
+        return 1
     }
 
     func animateTransition(using transitionContext: UIViewControllerContextTransitioning) {

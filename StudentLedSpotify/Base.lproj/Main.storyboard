@@ -55,7 +55,7 @@
                                 </constraints>
                                 <color key="textColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <fontDescription key="fontDescription" name="AvenirNext-Medium" family="Avenir Next" pointSize="14"/>
-                                <textInputTraits key="textInputTraits"/>
+                                <textInputTraits key="textInputTraits" autocorrectionType="no"/>
                             </textField>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Search" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ziY-cP-34n">
                                 <rect key="frame" x="16" y="59" width="361" height="33"/>
@@ -291,7 +291,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="kpI-zi-RpG" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="3895" y="-199"/>
+            <point key="canvasLocation" x="3893.8931297709923" y="-199.29577464788733"/>
         </scene>
         <!--Tab Bar Controller-->
         <scene sceneID="kZA-4D-ivm">
@@ -335,7 +335,7 @@
                                     <constraint firstAttribute="height" constant="41" id="ldV-Et-Kaz"/>
                                 </constraints>
                                 <fontDescription key="fontDescription" name="AvenirNext-Medium" family="Avenir Next" pointSize="14"/>
-                                <textInputTraits key="textInputTraits"/>
+                                <textInputTraits key="textInputTraits" autocorrectionType="no"/>
                             </textField>
                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="search" translatesAutoresizingMaskIntoConstraints="NO" id="mlF-aD-Idw">
                                 <rect key="frame" x="28" y="111" width="21" height="21"/>
@@ -347,7 +347,7 @@
                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="Zyn-tV-9uB">
                                 <rect key="frame" x="16" y="163" width="361" height="557"/>
                                 <subviews>
-                                    <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="-1" estimatedSectionHeaderHeight="-1" sectionFooterHeight="-1" estimatedSectionFooterHeight="-1" translatesAutoresizingMaskIntoConstraints="NO" id="TLR-Uu-cjJ">
+                                    <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="-1" estimatedSectionHeaderHeight="-1" sectionFooterHeight="-1" estimatedSectionFooterHeight="-1" translatesAutoresizingMaskIntoConstraints="NO" id="LQw-0m-GP2">
                                         <rect key="frame" x="0.0" y="0.0" width="361" height="501"/>
                                         <color key="backgroundColor" red="0.070588235289999995" green="0.070588235289999995" blue="0.070588235289999995" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                     </tableView>
@@ -401,7 +401,6 @@
                                             <constraint firstItem="tQU-5q-Krn" firstAttribute="leading" secondItem="hxL-Q5-rnM" secondAttribute="leading" constant="8" id="Wf5-Io-zVY"/>
                                             <constraint firstAttribute="trailing" secondItem="P2K-zb-PB4" secondAttribute="trailing" constant="8" id="Z0P-xM-uFf"/>
                                             <constraint firstItem="ZWV-mR-LxX" firstAttribute="top" secondItem="hxL-Q5-rnM" secondAttribute="top" constant="8" id="bQG-QO-61Q"/>
-                                            <constraint firstAttribute="height" constant="56" id="cSx-GS-ppC"/>
                                             <constraint firstItem="M6U-wx-8VA" firstAttribute="leading" secondItem="hxL-Q5-rnM" secondAttribute="leading" constant="8" id="dLy-OF-GXP"/>
                                             <constraint firstItem="P2K-zb-PB4" firstAttribute="top" secondItem="hxL-Q5-rnM" secondAttribute="top" constant="8" id="eRs-9d-jJc"/>
                                             <constraint firstItem="wYJ-Rk-7gh" firstAttribute="leading" secondItem="tQU-5q-Krn" secondAttribute="trailing" constant="13" id="g1w-Ce-iqq"/>
@@ -460,7 +459,7 @@
                         <outlet property="songName" destination="ZWV-mR-LxX" id="hr9-O0-fpM"/>
                         <outlet property="songProgress" destination="M6U-wx-8VA" id="ydF-Rc-qmN"/>
                         <outlet property="songView" destination="hxL-Q5-rnM" id="NsL-ou-Vb9"/>
-                        <outlet property="songsTableVIew" destination="TLR-Uu-cjJ" id="Q45-AZ-88T"/>
+                        <outlet property="songsTableVIew" destination="LQw-0m-GP2" id="mNv-yc-pAo"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="xmo-Z0-vFV" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>

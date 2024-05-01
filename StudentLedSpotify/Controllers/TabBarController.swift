@@ -15,3 +15,13 @@ class TabBarController: UITabBarController {
   }
 
 }
+//self.headerView.userName.text = "\(self.playlist?.username ?? "")"
+//self.headerView.songsCount.text = " \(self.playlist?.n_tracks ?? 0) songs, \(self.playlist?.duration.abbreviatedDuration() ?? "")"
+//self.headerView.playlistName.text = self.playlist?.playlist
+//if let imageUrl = URL(string: self.playlist?.image ?? "") {
+//  self.songFetcher.loadImage(from: imageUrl) { (image) in
+//    DispatchQueue.main.async{
+//      self.headerView.playlistImageView.image = image
+//    }
+//  }
+//}

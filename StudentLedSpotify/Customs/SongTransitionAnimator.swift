@@ -9,6 +9,11 @@ import Foundation
 import UIKit
 
 class SongTransitionAnimator: NSObject, UIViewControllerAnimatedTransitioning {
+    let completion: (() -> Void)?
+
+    init(completion: (() -> Void)? = nil) {
+        self.completion = completion
+    }
 
     func transitionDuration(using transitionContext: UIViewControllerContextTransitioning?) -> TimeInterval {
         return 0.5
@@ -26,6 +31,7 @@ class SongTransitionAnimator: NSObject, UIViewControllerAnimatedTransitioning {
             toViewController.view.transform = .identity
         }, completion: { finished in
             transitionContext.completeTransition(finished)
+            self.completion?() // Call completion handler after animation completes
         })
     }
 }

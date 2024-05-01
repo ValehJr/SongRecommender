@@ -10,6 +10,8 @@ import AVFoundation
 
 class SongViewController: UIViewController {
 
+  weak var delegate: SongViewControllerDelegate?
+
   // MARK: Outlets
   @IBOutlet weak var heartButton: UIButton!
   @IBOutlet weak var playButton: UIButton!
@@ -25,11 +27,11 @@ class SongViewController: UIViewController {
   var isPlaying: Bool = false
   var song:Song?
   var playStateDidChange: ((Bool) -> Void)?
+  var likedSongs = LikedViewController()
 
   // MARK: Managers
   let songFetcher = SongFetcher.shared
   let timeManager = TimeManager.shared
-
 
   // MARK: Lifecycle Methods
   override func viewDidLoad() {
@@ -39,7 +41,6 @@ class SongViewController: UIViewController {
     } else {
       heartButton.setImage(UIImage(named: "heart"), for: .normal)
     }
-
   }
 
   override func viewDidAppear(_ animated: Bool) {
@@ -47,6 +48,7 @@ class SongViewController: UIViewController {
     let imageName = isPlaying ? "pause" : "play"
     playButton.setImage(UIImage(named: imageName), for: .normal)
     timeManager.startTimer(target: self, selector: #selector(updateProgress))
+    print(song)
   }
 
   // MARK: Button Functions
@@ -63,7 +65,9 @@ class SongViewController: UIViewController {
   @IBAction func downButtonAction(_ sender: Any) {
     transitioningDelegate = self
     timeManager.stopTimer()
-    dismiss(animated: true, completion: nil)
+    dismiss(animated: true) {
+      self.delegate?.songViewControllerDismissed()
+    }
   }
 
   @IBAction func playButtonAction(_ sender: Any) {
@@ -92,8 +96,6 @@ class SongViewController: UIViewController {
       var songsArray = UserDefaults.standard.array(forKey: "songs") as? [Data] ?? []
       songsArray.append(songData)
       UserDefaults.standard.set(songsArray, forKey: "songs")
-
-      print("Song saved to UserDefaults.")
     } catch {
       print("Error encoding song data:", error)
     }
@@ -117,7 +119,6 @@ class SongViewController: UIViewController {
     }
 
     UserDefaults.standard.set(songsArray, forKey: "songs")
-    print("Song deleted from UserDefaults.")
   }
 
   func isSongSaved() -> Bool {
