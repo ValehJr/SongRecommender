@@ -161,11 +161,12 @@ class PlaylistViewController: UIViewController {
 			}
 		 }
 
-		 // Add height constraint to the header view
-		 headerView.translatesAutoresizingMaskIntoConstraints = false
-		 
+		 headerView.translatesAutoresizingMaskIntoConstraints = true
+
 		 let heightConstraint = NSLayoutConstraint(item: headerView, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: 329)
 		 headerView.addConstraint(heightConstraint)
+
+		 headerView.autoresizingMask = [.flexibleWidth]
 		 self.songsTableVIew.tableHeaderView = headerView
 
 	  }
