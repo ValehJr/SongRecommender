@@ -66,6 +66,7 @@ class PlaylistViewController: UIViewController {
 	  refreshButton.backgroundColor = .white
 	  refreshButton.layer.cornerRadius = 16
 	  refreshButton.titleLabel?.font = UIFont(name: "AvenirNext-Medium", size: 16)
+	  refreshButton.isHidden = true
 	  tabBarConfigure()
    }
 
@@ -123,6 +124,9 @@ class PlaylistViewController: UIViewController {
 	  playlist = nil
 	  songsTableVIew.reloadData()
 	  songsTableVIew.tableHeaderView = nil
+	  refreshButton.isHidden = true
+	  songView.isHidden = true
+	  self.player?.pause()
 
 	  songFetcher.fetchPlaylistSongs(for: text) { [weak self] fetchedPlaylist, error in
 		 guard let self = self else { return }
@@ -139,6 +143,7 @@ class PlaylistViewController: UIViewController {
 		 if let fetchedPlaylist = fetchedPlaylist {
 			self.playlist = fetchedPlaylist
 			DispatchQueue.main.async {
+			   self.refreshButton.isHidden = false
 			   self.songsTableVIew.reloadData()
 			   self.addHeaderView()
 			   if self.playlist != nil {
@@ -257,7 +262,7 @@ extension PlaylistViewController: UITableViewDelegate, UITableViewDataSource {
 	  if let mp3UrlString = song.mp3_url, let url = URL(string: mp3UrlString) {
 		 playButton.setImage(UIImage(named: "play"), for: .normal)
 		 let playerItem = AVPlayerItem(url: url)
-		 player?.pause()
+		 player?.play()
 		 player = AVPlayer(playerItem: playerItem)
 		 songView.isHidden = false
 	  } else if let spotifyUrlString = song.spotify_url, let url = URL(string: spotifyUrlString) {
