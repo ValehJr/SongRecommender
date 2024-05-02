@@ -23,18 +23,6 @@
                             <constraint firstAttribute="width" constant="50" id="zzm-px-Kpw"/>
                         </constraints>
                     </imageView>
-                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="mGF-eB-GBM">
-                        <rect key="frame" x="72" y="36" width="206" height="17"/>
-                        <fontDescription key="fontDescription" name="AvenirNext-Medium" family="Avenir Next" pointSize="12"/>
-                        <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                        <nil key="highlightedColor"/>
-                    </label>
-                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="wRU-II-S9y">
-                        <rect key="frame" x="72" y="9" width="206" height="21"/>
-                        <fontDescription key="fontDescription" name="AvenirNext-Medium" family="Avenir Next" pointSize="15"/>
-                        <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                        <nil key="highlightedColor"/>
-                    </label>
                     <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="Kdq-iD-ThS">
                         <rect key="frame" x="316" y="22" width="25" height="25"/>
                         <constraints>
@@ -42,6 +30,18 @@
                             <constraint firstAttribute="height" constant="25" id="r8q-Ne-xbr"/>
                         </constraints>
                     </imageView>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="mGF-eB-GBM">
+                        <rect key="frame" x="72" y="39" width="206" height="17"/>
+                        <fontDescription key="fontDescription" name="AvenirNext-Medium" family="Avenir Next" pointSize="12"/>
+                        <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="wRU-II-S9y">
+                        <rect key="frame" x="72" y="12" width="206" height="21"/>
+                        <fontDescription key="fontDescription" name="AvenirNext-Medium" family="Avenir Next" pointSize="15"/>
+                        <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <nil key="highlightedColor"/>
+                    </label>
                 </subviews>
                 <color key="backgroundColor" red="0.070588235289999995" green="0.070588235289999995" blue="0.070588235289999995" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                 <constraints>
@@ -51,11 +51,11 @@
                     <constraint firstAttribute="trailing" secondItem="Kdq-iD-ThS" secondAttribute="trailing" constant="20" symbolic="YES" id="FN2-WN-L20"/>
                     <constraint firstItem="tYM-Oj-yY5" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="9" id="Ia8-EA-QKl"/>
                     <constraint firstAttribute="bottom" secondItem="Kdq-iD-ThS" secondAttribute="bottom" constant="21" id="RNy-B7-bZe"/>
-                    <constraint firstItem="wRU-II-S9y" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="9" id="S1Z-IH-SDH"/>
+                    <constraint firstItem="wRU-II-S9y" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="12" id="S1Z-IH-SDH"/>
                     <constraint firstItem="mGF-eB-GBM" firstAttribute="top" secondItem="wRU-II-S9y" secondAttribute="bottom" constant="6" id="Vgg-Jv-Nf9"/>
                     <constraint firstItem="wRU-II-S9y" firstAttribute="leading" secondItem="tYM-Oj-yY5" secondAttribute="trailing" constant="8" symbolic="YES" id="ZBL-8d-Sla"/>
                     <constraint firstItem="mGF-eB-GBM" firstAttribute="leading" secondItem="tYM-Oj-yY5" secondAttribute="trailing" constant="8" symbolic="YES" id="gy1-bk-gJ1"/>
-                    <constraint firstAttribute="bottom" secondItem="mGF-eB-GBM" secondAttribute="bottom" constant="15" id="tQS-tg-wXE"/>
+                    <constraint firstAttribute="bottom" secondItem="mGF-eB-GBM" secondAttribute="bottom" constant="12" id="tQS-tg-wXE"/>
                 </constraints>
             </tableViewCellContentView>
             <viewLayoutGuide key="safeArea" id="njF-e1-oar"/>

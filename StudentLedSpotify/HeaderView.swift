@@ -8,6 +8,7 @@
 import UIKit
 class HeaderView: UIView {
 
+   @IBOutlet weak var profileImageView: UIImageView!
    @IBOutlet weak var infoView: UIView!
    @IBOutlet weak var songsCount: UILabel!
    @IBOutlet weak var userName: UILabel!
@@ -23,9 +24,11 @@ class HeaderView: UIView {
    }
 
 
-   func configureView(playlistImageView:UIImage,userName:String,playlistName:String,songsCount:String){
+   func configureView(profileImageView:UIImage, playlistImageView:UIImage,userName:String,playlistName:String,songsCount:String){
 	  self.playlistImageView.image = playlistImageView
 	  self.playlistImageView.layer.cornerRadius = 12
+	  self.profileImageView.image = profileImageView
+	  self.profileImageView.layer.cornerRadius = 12
 	  self.infoView.layer.cornerRadius = 16
 	  self.playlistName.text = playlistName
 	  self.songsCount.text = songsCount

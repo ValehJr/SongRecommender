@@ -2,7 +2,7 @@
 //  SongTransitionAnimator.swift
 //  StudentLedSpotify
 //
-//  Created by Valeh Ismayilov on 13.04.24.
+//  Created by Valeh Ismayilov on 13.03.24.
 //
 
 import Foundation
@@ -16,7 +16,7 @@ class SongTransitionAnimator: NSObject, UIViewControllerAnimatedTransitioning {
     }
 
     func transitionDuration(using transitionContext: UIViewControllerContextTransitioning?) -> TimeInterval {
-        return 0.5
+        return 1
     }
 
     func animateTransition(using transitionContext: UIViewControllerContextTransitioning) {
@@ -31,7 +31,7 @@ class SongTransitionAnimator: NSObject, UIViewControllerAnimatedTransitioning {
             toViewController.view.transform = .identity
         }, completion: { finished in
             transitionContext.completeTransition(finished)
-            self.completion?() // Call completion handler after animation completes
+            self.completion?() 
         })
     }
 }

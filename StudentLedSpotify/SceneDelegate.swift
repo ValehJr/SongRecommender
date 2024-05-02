@@ -2,7 +2,7 @@
 //  SceneDelegate.swift
 //  StudentLedSpotify
 //
-//  Created by Valeh Ismayilov on 07.04.24.
+//  Created by Valeh Ismayilov on 07.03.24.
 //
 
 import UIKit

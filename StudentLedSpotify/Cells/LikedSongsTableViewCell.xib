@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="32700.99.1234" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina6_12" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="22684"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" id="KGk-i7-Jjw" customClass="LikedSongsTableViewCell" customModule="StudentLedSpotify" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="361" height="68"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+            <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="KGk-i7-Jjw" id="H2p-sc-9uM">
+                <rect key="frame" x="0.0" y="0.0" width="361" height="68"/>
+                <autoresizingMask key="autoresizingMask"/>
+                <subviews>
+                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="gHl-pl-Hoh">
+                        <rect key="frame" x="14" y="9" width="50" height="50"/>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="50" id="2fD-Mb-KLv"/>
+                            <constraint firstAttribute="width" constant="50" id="wdJ-Un-x13"/>
+                        </constraints>
+                    </imageView>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="aB1-hk-iRQ">
+                        <rect key="frame" x="72" y="39" width="231" height="17"/>
+                        <fontDescription key="fontDescription" name="AvenirNext-Medium" family="Avenir Next" pointSize="12"/>
+                        <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="fn4-dk-lSK">
+                        <rect key="frame" x="72" y="12" width="231" height="21"/>
+                        <fontDescription key="fontDescription" name="AvenirNext-Medium" family="Avenir Next" pointSize="15"/>
+                        <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="k51-r7-ikN">
+                        <rect key="frame" x="311" y="19" width="30" height="30"/>
+                        <constraints>
+                            <constraint firstAttribute="width" constant="30" id="0Qd-Kd-q20"/>
+                            <constraint firstAttribute="height" constant="30" id="bkf-Ec-uqR"/>
+                        </constraints>
+                        <state key="normal" title="Button"/>
+                        <buttonConfiguration key="configuration" style="plain"/>
+                        <connections>
+                            <action selector="likeButtonAction:" destination="KGk-i7-Jjw" eventType="touchUpInside" id="Ogp-Yd-r2U"/>
+                        </connections>
+                    </button>
+                </subviews>
+                <color key="backgroundColor" red="0.070588235289999995" green="0.070588235289999995" blue="0.070588235289999995" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                <constraints>
+                    <constraint firstItem="fn4-dk-lSK" firstAttribute="leading" secondItem="gHl-pl-Hoh" secondAttribute="trailing" constant="8" symbolic="YES" id="5SO-mb-rq1"/>
+                    <constraint firstItem="gHl-pl-Hoh" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="14" id="5sQ-Px-fji"/>
+                    <constraint firstItem="fn4-dk-lSK" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="12" id="5tE-GM-keT"/>
+                    <constraint firstAttribute="bottom" secondItem="aB1-hk-iRQ" secondAttribute="bottom" constant="12" id="8Ck-NJ-y3r"/>
+                    <constraint firstItem="k51-r7-ikN" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="19" id="A3U-y1-pfr"/>
+                    <constraint firstAttribute="trailing" secondItem="k51-r7-ikN" secondAttribute="trailing" constant="20" symbolic="YES" id="LGg-rb-L4U"/>
+                    <constraint firstItem="k51-r7-ikN" firstAttribute="leading" secondItem="fn4-dk-lSK" secondAttribute="trailing" constant="8" symbolic="YES" id="Ndy-6l-iuw"/>
+                    <constraint firstItem="k51-r7-ikN" firstAttribute="leading" secondItem="aB1-hk-iRQ" secondAttribute="trailing" constant="8" symbolic="YES" id="P5h-Y0-VEK"/>
+                    <constraint firstItem="aB1-hk-iRQ" firstAttribute="leading" secondItem="gHl-pl-Hoh" secondAttribute="trailing" constant="8" symbolic="YES" id="ax4-8m-9i4"/>
+                    <constraint firstItem="gHl-pl-Hoh" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="9" id="gWe-vr-N5D"/>
+                    <constraint firstItem="aB1-hk-iRQ" firstAttribute="top" secondItem="fn4-dk-lSK" secondAttribute="bottom" constant="6" id="xGS-eZ-2ej"/>
+                </constraints>
+            </tableViewCellContentView>
+            <viewLayoutGuide key="safeArea" id="njF-e1-oar"/>
+            <connections>
+                <outlet property="artistName" destination="aB1-hk-iRQ" id="tTz-B2-QkD"/>
+                <outlet property="likeButton" destination="k51-r7-ikN" id="QdI-di-vp8"/>
+                <outlet property="songImageView" destination="gHl-pl-Hoh" id="67o-aq-auH"/>
+                <outlet property="songName" destination="fn4-dk-lSK" id="PRQ-Jh-uIZ"/>
+            </connections>
+            <point key="canvasLocation" x="78.625954198473281" y="-11.267605633802818"/>
+        </tableViewCell>
+    </objects>
+</document>

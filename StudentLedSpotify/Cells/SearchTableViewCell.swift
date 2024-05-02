@@ -2,7 +2,7 @@
 //  SearchTableViewCell.swift
 //  StudentLedSpotify
 //
-//  Created by Valeh Ismayilov on 14.04.24.
+//  Created by Valeh Ismayilov on 14.03.24.
 //
 
 import UIKit

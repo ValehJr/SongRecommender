@@ -15,6 +15,8 @@
 		1D2F23AA2BC2C7040023FA2A /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 1D2F23A92BC2C7040023FA2A /* Assets.xcassets */; };
 		1D2F23AD2BC2C7040023FA2A /* Base in Resources */ = {isa = PBXBuildFile; fileRef = 1D2F23AC2BC2C7040023FA2A /* Base */; };
 		1D2F23C32BC2C89C0023FA2A /* Song.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D2F23C22BC2C89C0023FA2A /* Song.swift */; };
+		1D41A1402BE38FF900E57FFA /* LikedSongsTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D41A13E2BE38FF900E57FFA /* LikedSongsTableViewCell.swift */; };
+		1D41A1412BE38FF900E57FFA /* LikedSongsTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1D41A13F2BE38FF900E57FFA /* LikedSongsTableViewCell.xib */; };
 		1D50F51A2BC3B46D00B9B72D /* HomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D50F5192BC3B46D00B9B72D /* HomeViewController.swift */; };
 		1D50F51C2BC3B4E000B9B72D /* TabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D50F51B2BC3B4E000B9B72D /* TabBarController.swift */; };
 		1D50F5212BC3EB9E00B9B72D /* PaddedTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D50F5202BC3EB9E00B9B72D /* PaddedTextField.swift */; };
@@ -26,7 +28,6 @@
 		1D779B062BC50B230000852F /* LikedViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D779B052BC50B230000852F /* LikedViewController.swift */; };
 		1DD679DD2BE2242B0030B491 /* HeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1DD679DC2BE2242B0030B491 /* HeaderView.swift */; };
 		1DD679DF2BE224380030B491 /* HeaderView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1DD679DE2BE224380030B491 /* HeaderView.xib */; };
-		1DD679E12BE225340030B491 /* UIViewExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1DD679E02BE225330030B491 /* UIViewExtension.swift */; };
 		1DDA83B42BD6C5480085CFE6 /* SongFetcher.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1DDA83B32BD6C5480085CFE6 /* SongFetcher.swift */; };
 		1DDA83B62BD6C7E80085CFE6 /* TimeManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1DDA83B52BD6C7E80085CFE6 /* TimeManager.swift */; };
 		1DF3652C2BDB748400C036F9 /* AnimationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1DF3652B2BDB748400C036F9 /* AnimationManager.swift */; };
@@ -46,6 +47,8 @@
 		1D2F23AC2BC2C7040023FA2A /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		1D2F23AE2BC2C7040023FA2A /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		1D2F23C22BC2C89C0023FA2A /* Song.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Song.swift; sourceTree = "<group>"; };
+		1D41A13E2BE38FF900E57FFA /* LikedSongsTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LikedSongsTableViewCell.swift; sourceTree = "<group>"; };
+		1D41A13F2BE38FF900E57FFA /* LikedSongsTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = LikedSongsTableViewCell.xib; sourceTree = "<group>"; };
 		1D50F5192BC3B46D00B9B72D /* HomeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewController.swift; sourceTree = "<group>"; };
 		1D50F51B2BC3B4E000B9B72D /* TabBarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarController.swift; sourceTree = "<group>"; };
 		1D50F5202BC3EB9E00B9B72D /* PaddedTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaddedTextField.swift; sourceTree = "<group>"; };
@@ -57,7 +60,6 @@
 		1D779B052BC50B230000852F /* LikedViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LikedViewController.swift; sourceTree = "<group>"; };
 		1DD679DC2BE2242B0030B491 /* HeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HeaderView.swift; sourceTree = "<group>"; };
 		1DD679DE2BE224380030B491 /* HeaderView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = HeaderView.xib; sourceTree = "<group>"; };
-		1DD679E02BE225330030B491 /* UIViewExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIViewExtension.swift; sourceTree = "<group>"; };
 		1DDA83B32BD6C5480085CFE6 /* SongFetcher.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SongFetcher.swift; sourceTree = "<group>"; };
 		1DDA83B52BD6C7E80085CFE6 /* TimeManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimeManager.swift; sourceTree = "<group>"; };
 		1DF3652B2BDB748400C036F9 /* AnimationManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnimationManager.swift; sourceTree = "<group>"; };
@@ -103,7 +105,6 @@
 				1D2F23A62BC2C7020023FA2A /* Main.storyboard */,
 				1DD679DC2BE2242B0030B491 /* HeaderView.swift */,
 				1DD679DE2BE224380030B491 /* HeaderView.xib */,
-				1DD679E02BE225330030B491 /* UIViewExtension.swift */,
 				1D2F23B92BC2C8310023FA2A /* Models */,
 				1D2F23B42BC2C7290023FA2A /* Managers */,
 				1D50F5162BC3B22000B9B72D /* Controllers */,
@@ -173,6 +174,8 @@
 				1D50F5242BC3EC3A00B9B72D /* SongsTableViewCell.xib */,
 				1D76DF252BCC31B300C055D2 /* SearchTableViewCell.swift */,
 				1D76DF262BCC31B300C055D2 /* SearchTableViewCell.xib */,
+				1D41A13E2BE38FF900E57FFA /* LikedSongsTableViewCell.swift */,
+				1D41A13F2BE38FF900E57FFA /* LikedSongsTableViewCell.xib */,
 			);
 			path = Cells;
 			sourceTree = "<group>";
@@ -243,6 +246,7 @@
 			files = (
 				1D2F23AA2BC2C7040023FA2A /* Assets.xcassets in Resources */,
 				1D50F5262BC3EC3A00B9B72D /* SongsTableViewCell.xib in Resources */,
+				1D41A1412BE38FF900E57FFA /* LikedSongsTableViewCell.xib in Resources */,
 				1D711F4D2BDA9FD100A0F0B5 /* loading.json in Resources */,
 				1D2F23AD2BC2C7040023FA2A /* Base in Resources */,
 				1D2F23A82BC2C7020023FA2A /* Base in Resources */,
@@ -264,6 +268,7 @@
 				1D50F5212BC3EB9E00B9B72D /* PaddedTextField.swift in Sources */,
 				1DF3652C2BDB748400C036F9 /* AnimationManager.swift in Sources */,
 				1D50F51C2BC3B4E000B9B72D /* TabBarController.swift in Sources */,
+				1D41A1402BE38FF900E57FFA /* LikedSongsTableViewCell.swift in Sources */,
 				1DF6EFAD2BCA7A350042B6B6 /* SongPresentationController.swift in Sources */,
 				1DF6EFAB2BCA660C0042B6B6 /* SongViewController.swift in Sources */,
 				1D2F23A12BC2C7020023FA2A /* AppDelegate.swift in Sources */,
@@ -271,7 +276,6 @@
 				1D0082F12BD6E06E001EEC91 /* PlaylistViewController.swift in Sources */,
 				1D779B062BC50B230000852F /* LikedViewController.swift in Sources */,
 				1D50F5252BC3EC3A00B9B72D /* SongsTableViewCell.swift in Sources */,
-				1DD679E12BE225340030B491 /* UIViewExtension.swift in Sources */,
 				1D2F23A32BC2C7020023FA2A /* SceneDelegate.swift in Sources */,
 				1DF6EFB12BCA7C1F0042B6B6 /* DissmissAnimator.swift in Sources */,
 				1D76DF272BCC31B300C055D2 /* SearchTableViewCell.swift in Sources */,

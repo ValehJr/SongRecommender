@@ -2,7 +2,7 @@
 //  PlaylistViewController.swift
 //  StudentLedSpotify
 //
-//  Created by Valeh Ismayilov on 22.04.24.
+//  Created by Valeh Ismayilov on 22.03.24.
 //
 
 import UIKit
@@ -158,10 +158,12 @@ class PlaylistViewController: UIViewController {
    func addHeaderView() {
 	  if let headerView = self.headerViewNib.instantiate(withOwner: self, options: nil).first as? HeaderView {
 		 headerView.frame = CGRect(x: 0, y: 0, width: self.songsTableVIew.bounds.width, height: 329)
-		 if let imageUrl = URL(string: self.playlist?.image ?? "") {
+		 if let imageUrl = URL(string: self.playlist?.image ?? ""), let userUrl = URL(string: self.playlist?.profile_picture ?? "") {
 			self.songFetcher.loadImage(from: imageUrl) { (image) in
-			   DispatchQueue.main.async{
-				  headerView.configureView(playlistImageView: image!, userName: self.playlist?.username ?? "", playlistName: self.playlist?.playlist ?? "", songsCount: " \(self.playlist?.n_tracks ?? 0) songs, \(self.playlist?.duration.abbreviatedDuration() ?? "")")
+			   self.songFetcher.loadImage(from: userUrl) { (img) in
+				  DispatchQueue.main.async{
+					 headerView.configureView(profileImageView:img!,playlistImageView: image!, userName: self.playlist?.username ?? "", playlistName: self.playlist?.playlist ?? "", songsCount: " \(self.playlist?.n_tracks ?? 0) songs, \(self.playlist?.duration.abbreviatedDuration() ?? "")")
+				  }
 			   }
 			}
 		 }
@@ -260,13 +262,22 @@ extension PlaylistViewController: UITableViewDelegate, UITableViewDataSource {
 		 }
 	  }
 	  if let mp3UrlString = song.mp3_url, let url = URL(string: mp3UrlString) {
-		 playButton.setImage(UIImage(named: "play"), for: .normal)
+		 playButton.isHidden = false
+		 playButton.setImage(UIImage(named: "pause"), for: .normal)
 		 let playerItem = AVPlayerItem(url: url)
-		 player?.play()
+		 player?.pause()
 		 player = AVPlayer(playerItem: playerItem)
-		 songView.isHidden = false
+		 player?.play() // Start playing the song
+		 timeManager.startTimer(target: self, selector: #selector(updateProgress))
 	  } else if let spotifyUrlString = song.spotify_url, let url = URL(string: spotifyUrlString) {
-		 UIApplication.shared.open(url, options: [:], completionHandler: nil)
+		 player?.pause()
+		 playButton.isHidden = true
+		 let alertController = UIAlertController(title: "Redirect to Spotify", message: "You will be redirected to Spotify, do you want to proceed?", preferredStyle: .alert)
+		 alertController.addAction(UIAlertAction(title: "No", style: .cancel, handler: nil))
+		 alertController.addAction(UIAlertAction(title: "Yes", style: .default, handler: { _ in
+			UIApplication.shared.open(url, options: [:], completionHandler: nil)
+		 }))
+		 self.present(alertController, animated: true, completion: nil)
 	  } else {
 		 print("Both mp3_url and spotify_url are null")
 	  }
