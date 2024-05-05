@@ -26,6 +26,7 @@ class LikedViewController: UIViewController, LikedSongsTableViewCellDelegate {
    }
 
    let songFetcher = SongFetcher.shared
+   let userDefaultsManager = UserDefaultsManager.shared
 
    // MARK: Lifecycle Methods
 
@@ -69,53 +70,6 @@ class LikedViewController: UIViewController, LikedSongsTableViewCellDelegate {
 		 print("Error decoding songs data:", error)
 	  }
    }
-
-   func saveSongToUserDefaults(song:Song) {
-	  do {
-		 let encoder = JSONEncoder()
-		 let songData = try encoder.encode(song)
-		 var songsArray = UserDefaults.standard.array(forKey: "songs") as? [Data] ?? []
-		 songsArray.append(songData)
-		 UserDefaults.standard.set(songsArray, forKey: "songs")
-	  } catch {
-		 print("Error encoding song data:", error)
-	  }
-   }
-
-   func deleteSongFromUserDefaults(song:Song) {
-	  var songsArray = UserDefaults.standard.array(forKey: "songs") as? [Data] ?? []
-	  songsArray = songsArray.filter { data in
-		 do {
-			let decoder = JSONDecoder()
-			let savedSong = try decoder.decode(Song.self, from: data)
-			return savedSong.track_id != song.track_id
-		 } catch {
-			print("Error decoding song data:", error)
-			return true
-		 }
-	  }
-
-	  UserDefaults.standard.set(songsArray, forKey: "songs")
-   }
-
-   func isSongSaved(song:Song) -> Bool {
-	  guard let songsData = UserDefaults.standard.array(forKey: "songs") as? [Data] else {
-		 return false
-	  }
-	  for songData in songsData {
-		 do {
-			let decoder = JSONDecoder()
-			let savedSong = try decoder.decode(Song.self, from: songData)
-			if savedSong == song {
-			   return true
-			}
-		 } catch {
-			print("Error decoding song data:", error)
-		 }
-	  }
-	  return false
-   }
-
 }
 
 extension LikedViewController:UITableViewDelegate,UITableViewDataSource {
@@ -128,6 +82,7 @@ extension LikedViewController:UITableViewDelegate,UITableViewDataSource {
 	  let song = songs[indexPath.row]
 	  cell.songName.text = song.track_name
 	  cell.artistName.text = song.artist_name
+	  cell.likeButton.setImage(UIImage(named: "heartFilled"), for: .normal)
 	  if let imageUrl = URL(string: song.image_url) {
 		 songFetcher.loadImage(from: imageUrl) { (image) in
 			DispatchQueue.main.async{
@@ -142,16 +97,12 @@ extension LikedViewController:UITableViewDelegate,UITableViewDataSource {
    func likeButtonDidTap(cell: LikedSongsTableViewCell) {
 	  guard let indexPath = songsTableView.indexPath(for: cell) else { return }
 	  let song = songs[indexPath.row]
-	  if isSongSaved(song: song) {
-		 deleteSongFromUserDefaults(song: song)
+	  if userDefaultsManager.isSongSaved(song: song) {
+		 userDefaultsManager.deleteSongFromUserDefaults(song: song)
 		 cell.likeButton.setImage(UIImage(named: "heart"), for: .normal)
-		 print("delte")
-		 self.songsTableView.reloadData()
 	  } else {
-		 saveSongToUserDefaults(song: song)
+		 userDefaultsManager.saveSongToUserDefaults(song: song)
 		 cell.likeButton.setImage(UIImage(named: "heartFilled"), for: .normal)
-		 print("save")
-		 self.songsTableView.reloadData()
 	  }
    }
 }

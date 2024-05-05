@@ -1,25 +1,25 @@
 //
-//  PlaylistViewController.swift
+//  HomeViewController.swift
 //  StudentLedSpotify
 //
-//  Created by Valeh Ismayilov on 22.03.24.
+//  Created by Valeh Ismayilov on 08.03.24.
 //
 
 import UIKit
 import AVFoundation
 import Lottie
 
-class PlaylistViewController: UIViewController {
+class HomeViewController: UIViewController, UIScrollViewDelegate {
 
    // MARK: Outlets
-   @IBOutlet weak var playButton: UIButton!
-   @IBOutlet weak var songProgress: UIProgressView!
-   @IBOutlet weak var songImageView: UIImageView!
-   @IBOutlet weak var artistName: UILabel!
-   @IBOutlet weak var songName: UILabel!
-   @IBOutlet weak var songView: UIView!
-   @IBOutlet weak var searchTextField: PaddedTextField!
    @IBOutlet weak var refreshButton: UIButton!
+   @IBOutlet weak var songProgress: UIProgressView!
+   @IBOutlet weak var songName: UILabel!
+   @IBOutlet weak var songImage: UIImageView!
+   @IBOutlet weak var artistName: UILabel!
+   @IBOutlet weak var playButton: UIButton!
+   @IBOutlet weak var songView: UIView!
+   @IBOutlet weak var searchField: PaddedTextField!
    @IBOutlet weak var songsTableVIew: UITableView! {
 	  didSet {
 		 songsTableVIew.delegate = self
@@ -30,17 +30,16 @@ class PlaylistViewController: UIViewController {
    }
 
    // MARK: Properties
-   var playlist: Playlist?
+   var recomendSongs: [Song] = []
 
    var player: AVPlayer?
    var timer: Timer?
    var displayedSongsCount = 8
-   var lastContentOffset: CGFloat = 0
-   let headerViewNib = UINib(nibName: "HeaderView", bundle: nil)
 
    let songFetcher = SongFetcher.shared
    let timeManager = TimeManager.shared
    let animationManager = AnimationManager.shared
+
    var animationView: LottieAnimationView!
 
    // MARK: Lifecycle Methods
@@ -50,7 +49,7 @@ class PlaylistViewController: UIViewController {
 	  songView.isHidden = true
 	  let tapGesture = UITapGestureRecognizer(target: self, action: #selector(songViewTapped))
 	  songView.addGestureRecognizer(tapGesture)
-	  searchTextField.addTarget(self, action: #selector(textFieldDidEndEditingOnExit(_:)), for: .editingDidEndOnExit)
+	  searchField.addTarget(self, action: #selector(textFieldDidEndEditingOnExit(_:)), for: .editingDidEndOnExit)
    }
 
    override func viewDidAppear(_ animated: Bool) {
@@ -60,8 +59,8 @@ class PlaylistViewController: UIViewController {
    // MARK: UI Setup
    func UISetup() {
 	  let placeholderColor = UIColor(red: 19/255, green: 19/255, blue: 19/255, alpha: 1)
-	  searchTextField.layer.cornerRadius = 15
-	  searchTextField.attributedPlaceholder = NSAttributedString(string: "Playlist url...", attributes: [NSAttributedString.Key.foregroundColor: placeholderColor])
+	  searchField.layer.cornerRadius = 15
+	  searchField.attributedPlaceholder = NSAttributedString(string: "Artists or songs", attributes: [NSAttributedString.Key.foregroundColor: placeholderColor])
 	  songView.layer.cornerRadius = 7
 	  refreshButton.backgroundColor = .white
 	  refreshButton.layer.cornerRadius = 16
@@ -70,14 +69,26 @@ class PlaylistViewController: UIViewController {
 	  tabBarConfigure()
    }
 
+   func setupAnimation() {
+	  animationView = animationManager.setupAnimationInView(view)
+   }
+
+   func removeAnimation() {
+	  if let animationView = animationView {
+		 self.animationManager.removeAnimation(animationView)
+		 self.animationView = nil
+	  }
+   }
+
 
    // MARK: Tab Bar Configuration
    func tabBarConfigure(){
-	  let tabBarItem = UITabBarItem(title: "Playlist", image: UIImage(named: "searchGray"), selectedImage: UIImage(named: "searchWhite"))
+	  let tabBarItem = UITabBarItem(title: "Song", image: UIImage(named: "searchGray"), selectedImage: UIImage(named: "searchWhite"))
 	  self.tabBarItem = tabBarItem
    }
 
-   @IBAction func refreshButtonAction(_ sender: Any) {
+   // MARK: IBActions
+   @IBAction func refreshAction(_ sender: Any) {
 	  displayedSongsCount += 8
 	  songsTableVIew.reloadData()
    }
@@ -104,49 +115,34 @@ class PlaylistViewController: UIViewController {
 	  songProgress.setProgress(progress, animated: true)
    }
 
-   func setupAnimation() {
-	  animationView = animationManager.setupAnimationInView(view)
-   }
-
-   func removeAnimation() {
-	  if let animationView = animationView {
-		 self.animationManager.removeAnimation(animationView)
-		 self.animationView = nil
-	  }
-   }
-
-
    // MARK: Text Field Actions
    @objc func textFieldDidEndEditingOnExit(_ textField: UITextField) {
-	  guard let text = textField.text else { return }
-
 	  setupAnimation()
-	  playlist = nil
+	  recomendSongs = []
 	  songsTableVIew.reloadData()
-	  songsTableVIew.tableHeaderView = nil
 	  refreshButton.isHidden = true
 	  songView.isHidden = true
 	  self.player?.pause()
 
-	  songFetcher.fetchPlaylistSongs(for: text) { [weak self] fetchedPlaylist, error in
+	  guard let text = textField.text else { return }
+	  songFetcher.fetchSongs(for: text){[weak self] songs, error in
 		 guard let self = self else { return }
 		 if let error = error {
-			print("Error fetching playlist: \(error)")
+			print("Error fetching songs: \(error)")
 			DispatchQueue.main.async {
-			   if self.playlist != nil {
+			   if self.recomendSongs != nil {
 				  self.removeAnimation()
 			   }
 			   self.showAlert(message: error.localizedDescription)
 			}
 			return
 		 }
-		 if let fetchedPlaylist = fetchedPlaylist {
-			self.playlist = fetchedPlaylist
+		 if let songs = songs {
+			self.recomendSongs = songs
 			DispatchQueue.main.async {
-			   self.refreshButton.isHidden = false
 			   self.songsTableVIew.reloadData()
-			   self.addHeaderView()
-			   if self.playlist != nil {
+			   self.refreshButton.isHidden = false
+			   if self.recomendSongs != nil {
 				  self.removeAnimation()
 			   }
 			}
@@ -154,31 +150,6 @@ class PlaylistViewController: UIViewController {
 	  }
 	  displayedSongsCount = 8
    }
-
-   func addHeaderView() {
-	  if let headerView = self.headerViewNib.instantiate(withOwner: self, options: nil).first as? HeaderView {
-		 headerView.frame = CGRect(x: 0, y: 0, width: self.songsTableVIew.bounds.width, height: 329)
-		 if let imageUrl = URL(string: self.playlist?.image ?? ""), let userUrl = URL(string: self.playlist?.profile_picture ?? "") {
-			self.songFetcher.loadImage(from: imageUrl) { (image) in
-			   self.songFetcher.loadImage(from: userUrl) { (img) in
-				  DispatchQueue.main.async{
-					 headerView.configureView(profileImageView:img!,playlistImageView: image!, userName: self.playlist?.username ?? "", playlistName: self.playlist?.playlist ?? "", songsCount: " \(self.playlist?.n_tracks ?? 0) songs, \(self.playlist?.duration.abbreviatedDuration() ?? "")")
-				  }
-			   }
-			}
-		 }
-
-		 headerView.translatesAutoresizingMaskIntoConstraints = true
-
-		 let heightConstraint = NSLayoutConstraint(item: headerView, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: 329)
-		 headerView.addConstraint(heightConstraint)
-
-		 headerView.autoresizingMask = [.flexibleWidth]
-		 self.songsTableVIew.tableHeaderView = headerView
-
-	  }
-   }
-
 
    func showAlert(message: String) {
 	  DispatchQueue.main.async {
@@ -194,14 +165,13 @@ class PlaylistViewController: UIViewController {
 	  }
    }
 
-
    // MARK: Song View Gesture
    @objc func songViewTapped() {
 	  guard let songViewController = storyboard?.instantiateViewController(withIdentifier: "songVC") as? SongViewController else { return }
 	  songViewController.modalPresentationStyle = .custom
 	  songViewController.transitioningDelegate = self
 	  if let selectedIndexPath = songsTableVIew.indexPathForSelectedRow {
-		 let selectedSong = playlist?.songs[selectedIndexPath.row]
+		 let selectedSong = recomendSongs[selectedIndexPath.row]
 		 songViewController.song = selectedSong
 		 songViewController.player = player
 		 songViewController.isPlaying = (player?.rate != 0)
@@ -217,20 +187,14 @@ class PlaylistViewController: UIViewController {
 }
 
 // MARK: Table View Data Source & Delegate
-extension PlaylistViewController: UITableViewDelegate, UITableViewDataSource {
-   func numberOfSections(in tableView: UITableView) -> Int {
-	  return 1
-   }
-
+extension HomeViewController: UITableViewDelegate, UITableViewDataSource {
    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-	  return min(displayedSongsCount, playlist?.songs.count ?? 0)
+	  return min(displayedSongsCount, recomendSongs.count)
    }
 
    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
 	  let cell = tableView.dequeueReusableCell(withIdentifier: "SongsTableViewCell", for: indexPath) as! SongsTableViewCell
-	  guard let song = playlist?.songs[indexPath.row] else {
-		 return cell
-	  }
+	  let song = recomendSongs[indexPath.row]
 	  cell.nameLabel.text = song.track_name
 	  cell.artistLabel.text = song.artist_name
 	  if let imageUrl = URL(string: song.image_url) {
@@ -249,15 +213,13 @@ extension PlaylistViewController: UITableViewDelegate, UITableViewDataSource {
    }
 
    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-	  guard let song = playlist?.songs[indexPath.row] else {
-		 return
-	  }
+	  let song = recomendSongs[indexPath.item]
 	  songName.text = song.track_name
 	  artistName.text = song.artist_name
 	  if let imageUrl = URL(string: song.image_url) {
 		 songFetcher.loadImage(from: imageUrl) { (image) in
 			DispatchQueue.main.async{
-			   self.songImageView.image = image
+			   self.songImage.image = image
 			}
 		 }
 	  }
@@ -267,7 +229,7 @@ extension PlaylistViewController: UITableViewDelegate, UITableViewDataSource {
 		 let playerItem = AVPlayerItem(url: url)
 		 player?.pause()
 		 player = AVPlayer(playerItem: playerItem)
-		 player?.play() // Start playing the song
+		 player?.play()
 		 timeManager.startTimer(target: self, selector: #selector(updateProgress))
 	  } else if let spotifyUrlString = song.spotify_url, let url = URL(string: spotifyUrlString) {
 		 player?.pause()
@@ -286,7 +248,7 @@ extension PlaylistViewController: UITableViewDelegate, UITableViewDataSource {
 }
 
 // MARK: Transition Delegate
-extension PlaylistViewController: UIViewControllerTransitioningDelegate {
+extension HomeViewController: UIViewControllerTransitioningDelegate {
    func presentationController(forPresented presented: UIViewController, presenting: UIViewController?, source: UIViewController) -> UIPresentationController? {
 	  return SongPresentationController(presentedViewController: presented, presenting: presenting)
    }
@@ -297,35 +259,5 @@ extension PlaylistViewController: UIViewControllerTransitioningDelegate {
 
    func animationController(forDismissed dismissed: UIViewController) -> UIViewControllerAnimatedTransitioning? {
 	  return nil
-   }
-}
-
-extension String {
-   func abbreviatedDuration() -> String {
-	  let components = self.components(separatedBy: " ")
-	  var abbreviatedComponents: [String] = []
-
-	  var hours: Int = 0
-	  var minutes: Int = 0
-
-	  for i in 0..<components.count {
-		 if i % 2 == 0 {
-			if let value = Int(components[i]) {
-			   if components[i + 1].hasPrefix("hour") {
-				  hours += value
-			   } else if components[i + 1].hasPrefix("minute") {
-				  minutes += value
-			   }
-			}
-		 }
-	  }
-	  if hours > 0 {
-		 abbreviatedComponents.append("\(hours) hr")
-	  }
-
-	  if minutes > 0 {
-		 abbreviatedComponents.append("\(minutes) min")
-	  }
-	  return abbreviatedComponents.joined(separator: " ")
    }
 }

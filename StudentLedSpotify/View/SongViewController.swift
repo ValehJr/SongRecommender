@@ -32,11 +32,11 @@ class SongViewController: UIViewController {
    // MARK: Managers
    let songFetcher = SongFetcher.shared
    let timeManager = TimeManager.shared
+   let userDefaultsManager = UserDefaultsManager.shared
 
    // MARK: Lifecycle Methods
    override func viewDidLoad() {
 	  super.viewDidLoad()
-	  UISetup()
    }
 
    override func viewDidAppear(_ animated: Bool) {
@@ -44,29 +44,35 @@ class SongViewController: UIViewController {
 	  let imageName = isPlaying ? "pause" : "play"
 	  playButton.setImage(UIImage(named: imageName), for: .normal)
 	  timeManager.startTimer(target: self, selector: #selector(updateProgress))
-	  UISetup()
+	  DispatchQueue.main.async {
+		 self.UISetup()
+	  }
    }
 
    func UISetup() {
-	  if isSongSaved() {
-		 heartButton.setImage(UIImage(named: "heartFilled"), for: .normal)
-	  } else {
-		 heartButton.setImage(UIImage(named: "heart"), for: .normal)
-	  }
-	  if(song?.mp3_url == nil){
-		 playButton.isHidden = true
-		 songProgress.isHidden = true
+	  if let song = song {
+		 if userDefaultsManager.isSongSaved(song: song) {
+			heartButton.setImage(UIImage(named: "heartFilled"), for: .normal)
+		 } else {
+			heartButton.setImage(UIImage(named: "heart"), for: .normal)
+		 }
+		 if(song.mp3_url == nil){
+			playButton.isHidden = true
+			songProgress.isHidden = true
+		 }
 	  }
    }
 
    // MARK: Button Functions
    @IBAction func heartButtonAction(_ sender: Any) {
-	  if isSongSaved() {
-		 deleteSongFromUserDefaults()
-		 heartButton.setImage(UIImage(named: "heart"), for: .normal)
-	  } else {
-		 saveSongToUserDefaults()
-		 heartButton.setImage(UIImage(named: "heartFilled"), for: .normal)
+	  if let song = song {
+		 if userDefaultsManager.isSongSaved(song: song) {
+			userDefaultsManager.deleteSongFromUserDefaults(song: song)
+			heartButton.setImage(UIImage(named: "heart"), for: .normal)
+		 } else {
+			userDefaultsManager.saveSongToUserDefaults(song: song)
+			heartButton.setImage(UIImage(named: "heartFilled"), for: .normal)
+		 }
 	  }
    }
 
@@ -91,62 +97,6 @@ class SongViewController: UIViewController {
 	  }
 	  playStateDidChange?(player.rate != 0)
    }
-
-   // MARK: UserDefaults save and delete functionality
-   func saveSongToUserDefaults() {
-	  guard let song = song else {
-		 print("No song to save.")
-		 return
-	  }
-	  do {
-		 let encoder = JSONEncoder()
-		 let songData = try encoder.encode(song)
-		 var songsArray = UserDefaults.standard.array(forKey: "songs") as? [Data] ?? []
-		 songsArray.append(songData)
-		 UserDefaults.standard.set(songsArray, forKey: "songs")
-	  } catch {
-		 print("Error encoding song data:", error)
-	  }
-   }
-
-   func deleteSongFromUserDefaults() {
-	  guard let song = song else {
-		 print("No song to delete.")
-		 return
-	  }
-	  var songsArray = UserDefaults.standard.array(forKey: "songs") as? [Data] ?? []
-	  songsArray = songsArray.filter { data in
-		 do {
-			let decoder = JSONDecoder()
-			let savedSong = try decoder.decode(Song.self, from: data)
-			return savedSong.track_id != song.track_id
-		 } catch {
-			print("Error decoding song data:", error)
-			return true
-		 }
-	  }
-
-	  UserDefaults.standard.set(songsArray, forKey: "songs")
-   }
-
-   func isSongSaved() -> Bool {
-	  guard let songsData = UserDefaults.standard.array(forKey: "songs") as? [Data], let currentSong = song else {
-		 return false
-	  }
-	  for songData in songsData {
-		 do {
-			let decoder = JSONDecoder()
-			let savedSong = try decoder.decode(Song.self, from: songData)
-			if savedSong == currentSong {
-			   return true
-			}
-		 } catch {
-			print("Error decoding song data:", error)
-		 }
-	  }
-	  return false
-   }
-
 
    // MARK: common functions
    func songFetch(){

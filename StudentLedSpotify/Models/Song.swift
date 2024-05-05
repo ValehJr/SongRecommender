@@ -20,13 +20,4 @@ struct Song:Codable {
 	  return lhs.track_id == rhs.track_id
    }
 }
-// Playlist structure
-struct Playlist: Codable {
-   let username: String
-   let profile_picture:String
-   let playlist: String
-   let n_tracks: Int
-   let image: String
-   let duration: String
-   let songs: [Song]
-}
+

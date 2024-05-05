@@ -72,7 +72,7 @@ class SongFetcher {
   }
 
   func fetchPlaylistSongs(for query: String, completion: @escaping (Playlist?, Error?) -> Void) {
-    let urlString = "http://127.0.0.1:8000/recommendations/playlists?playlist_url=\(query.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) ?? "")"
+    let urlString = "http://127.0.0.1:8000/recommendations/playlists_v2/?playlist_url=\(query.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) ?? "")"
 
     guard let url = URL(string: urlString) else {
       print("Invalid URL")
