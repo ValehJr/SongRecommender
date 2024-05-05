@@ -31,7 +31,7 @@ class HeaderView: UIView {
 	  self.profileImageView.layer.cornerRadius = 12
 	  self.infoView.layer.cornerRadius = 16
 	  self.playlistName.text = playlistName
-	  self.songsCount.text = songsCount
+	  self.songsCount.text = songsCount.abbreviatedTimeFormat()
 	  self.userName.text = userName
    }
 

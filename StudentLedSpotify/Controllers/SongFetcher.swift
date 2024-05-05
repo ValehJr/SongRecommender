@@ -7,6 +7,7 @@
 
 import Foundation
 import UIKit
+
 class SongFetcher {
   static let shared = SongFetcher()
 
@@ -62,7 +63,7 @@ class SongFetcher {
         let songs = try JSONDecoder().decode([Song].self, from: data)
         completion(songs, nil)
       } catch {
-        let errorMessage = "Error decoding JSON: \(error.localizedDescription)"
+        let errorMessage = "No song was found"
         print(errorMessage)
         let error = NSError(domain: "", code: 0, userInfo: [NSLocalizedDescriptionKey: errorMessage])
         completion(nil, error)
@@ -72,7 +73,7 @@ class SongFetcher {
   }
 
   func fetchPlaylistSongs(for query: String, completion: @escaping (Playlist?, Error?) -> Void) {
-    let urlString = "http://127.0.0.1:8000/recommendations/playlists_v2/?playlist_url=\(query.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) ?? "")"
+    let urlString = "http://127.0.0.1:8000/recommendations/playlists_v1/?playlist_url=\(query.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) ?? "")"
 
     guard let url = URL(string: urlString) else {
       print("Invalid URL")

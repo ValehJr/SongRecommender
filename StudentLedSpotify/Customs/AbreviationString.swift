@@ -6,3 +6,12 @@
 //
 
 import Foundation
+import UIKit
+
+extension String {
+   func abbreviatedTimeFormat() -> String {
+	  var formattedString = self.replacingOccurrences(of: " hours", with: " hr")
+	  formattedString = formattedString.replacingOccurrences(of: " minutes", with: " min")
+	  return formattedString
+   }
+}

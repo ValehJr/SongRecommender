@@ -32,6 +32,8 @@ class PlaylistViewController: UIViewController {
    // MARK: Properties
    var playlist: Playlist?
 
+   var selectedIndexPath:IndexPath?
+
    var player: AVPlayer?
    var timer: Timer?
    var displayedSongsCount = 8
@@ -197,23 +199,37 @@ class PlaylistViewController: UIViewController {
 
    // MARK: Song View Gesture
    @objc func songViewTapped() {
-	  guard let songViewController = storyboard?.instantiateViewController(withIdentifier: "songVC") as? SongViewController else { return }
+	  guard let indexPath = selectedIndexPath else {
+		 print("No index path selected.")
+		 return
+	  }
+
+	  guard let songViewController = storyboard?.instantiateViewController(withIdentifier: "songVC") as? SongViewController else {
+		 print("Failed to instantiate SongViewController.")
+		 return
+	  }
 	  songViewController.modalPresentationStyle = .custom
 	  songViewController.transitioningDelegate = self
-	  if let selectedIndexPath = songsTableVIew.indexPathForSelectedRow {
-		 let selectedSong = playlist?.songs[selectedIndexPath.row]
-		 songViewController.song = selectedSong
-		 songViewController.player = player
-		 songViewController.isPlaying = (player?.rate != 0)
-		 songViewController.playStateDidChange = { [weak self] isPlaying in
-			self?.playButton.setImage(UIImage(named: isPlaying ? "pause" : "play"), for: .normal)
-			if !isPlaying {
-			   self?.player?.pause()
-			}
+
+	  guard indexPath.row < playlist?.songs.count ?? 0 else {
+		 print("Selected index path out of bounds.")
+		 return
+	  }
+
+	  let selectedSong = playlist?.songs[indexPath.row]
+	  songViewController.song = selectedSong
+	  songViewController.player = player
+	  songViewController.isPlaying = (player?.rate != 0)
+
+	  songViewController.playStateDidChange = { [weak self] isPlaying in
+		 self?.playButton.setImage(UIImage(named: isPlaying ? "pause" : "play"), for: .normal)
+		 if !isPlaying {
+			self?.player?.pause()
 		 }
 	  }
 	  present(songViewController, animated: true, completion: nil)
    }
+
 }
 
 // MARK: Table View Data Source & Delegate
@@ -231,20 +247,7 @@ extension PlaylistViewController: UITableViewDelegate, UITableViewDataSource {
 	  guard let song = playlist?.songs[indexPath.row] else {
 		 return cell
 	  }
-	  cell.nameLabel.text = song.track_name
-	  cell.artistLabel.text = song.artist_name
-	  if let imageUrl = URL(string: song.image_url) {
-		 songFetcher.loadImage(from: imageUrl) { (image) in
-			DispatchQueue.main.async{
-			   cell.songImage.image = image
-			}
-		 }
-	  }
-	  if song.mp3_url != nil {
-		 cell.spotifyImage.image = nil
-	  } else {
-		 cell.spotifyImage.image = UIImage(named: "spotify")
-	  }
+	  cell.configure(with: song)
 	  return cell
    }
 
@@ -252,6 +255,7 @@ extension PlaylistViewController: UITableViewDelegate, UITableViewDataSource {
 	  guard let song = playlist?.songs[indexPath.row] else {
 		 return
 	  }
+	  selectedIndexPath = indexPath
 	  songName.text = song.track_name
 	  artistName.text = song.artist_name
 	  if let imageUrl = URL(string: song.image_url) {
@@ -261,13 +265,14 @@ extension PlaylistViewController: UITableViewDelegate, UITableViewDataSource {
 			}
 		 }
 	  }
+
 	  if let mp3UrlString = song.mp3_url, let url = URL(string: mp3UrlString) {
 		 playButton.isHidden = false
 		 playButton.setImage(UIImage(named: "pause"), for: .normal)
 		 let playerItem = AVPlayerItem(url: url)
 		 player?.pause()
 		 player = AVPlayer(playerItem: playerItem)
-		 player?.play() // Start playing the song
+		 player?.play()
 		 timeManager.startTimer(target: self, selector: #selector(updateProgress))
 	  } else if let spotifyUrlString = song.spotify_url, let url = URL(string: spotifyUrlString) {
 		 player?.pause()
